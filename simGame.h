@@ -936,7 +936,7 @@ bool simGame<T>::commonKnowledge() const
 		{
 			for (int z = 0; z < numPlayers; z++)
 			{
-				if (!players.at(x)->getKnowledge()->getKnowsChoices(y, z))
+				if (!players.at(x)->getKnowledge()->getchoiceKnowledge(y, z))
 					return false;
 			}
 		}

@@ -9,7 +9,7 @@ Purpose: Game theory program
 
 int main()
 {
-	int menu = -1, numPlayers = 2, oList = 1;
+	int menu = -1, numPlayers = 2, oList = 1, secondColumn = 10;
 	int type = -1;
 	char impartial = '\n', load = '\n', save = '\n', startRand = '\n';
 	
@@ -56,61 +56,52 @@ int main()
 			cout << "What would you like to do?\n";
 			cout << "PRINT:\n";
 			cout << " " << oList << ". payoffs and best responses";
-			cout << setw(10) << oList + 10 << ". remove inferior strategies\n";
+			cout << setw(10) << oList + secondColumn << ". remove inferior strategies\n";
 			oList++;
 			
 			cout << " " << oList << ". payoffs";
-			cout << setw(29) << oList + 10 << ". Generate random game\n";
+			cout << setw(29) << oList + secondColumn << 
+			". Generate random game\n";
 			oList++;
 			
 			cout << " " << oList << ". best responses";
-			cout << setw(22) << oList + 10 << ". Add communication\n";
+			cout << setw(22) << oList + secondColumn << ". Add communication\n";
 			oList++; // 10 ^
 			
 			cout << " " << oList << ". both separately";
-			cout << setw(21) << oList + 10 << ". Load game from file\n";
+			cout << setw(21) << oList + secondColumn << 
+			". Load game from file\n";
 			oList++;			
 			
 			cout << " " << oList << ". pure equilibria";
-			cout << setw(21) << oList + 10 << ". Save game to file\n";
+			cout << setw(21) << oList + secondColumn << 
+			". Save game to file\n";
 			oList++;		
 			
 			cout << " " << oList << ". expected utilities";
-			cout << setw(18) << oList + 10 << ". Save game as LaTeX\n";
+			cout << setw(18) << oList + secondColumn << 
+			". Save game as LaTeX\n";
 			oList++;
 			
 			cout << " " << oList << ". k-rationalizability model";
-			cout << setw(11) << oList + 10 << ". End program\n";
+			cout << setw(11) << oList + secondColumn << 
+			". Edit player\n";
 			oList++;
 			
-			cout << " " << oList << ". A specific player's information\n";
+			cout << " " << oList << ". A specific player's information";
+			cout << setw(5) << oList + secondColumn << ". Set all players' rationalities\n";
 			oList++;
-			cout << " " << oList << ". All players' information\n";
+
+			cout << " " << oList << ". All players' information";
+			cout << setw(12) << oList + secondColumn << ". Add player\n";
 			oList++;
-			cout << " " << oList << ". Combinations\n";
+			cout << " " << oList << ". Mixed Equilibria\n";
 			oList++;
-			oList += 8;
+			
 			cout << "- - - - - - - - - - - - - - - - - -\n";
-			
-			// cout << oList << ". Bayesian model\n";
-			// oList++;
-			
-			cout << "DEPRECIATED:\n";
-			cout << oList << ". Set all players' rationalities\n";
-			oList++;
-			cout << oList << ". Add player\n";
-			oList++;
-			cout << oList << ". Edit player\n";
-			// cout << oList << ". Remove player\n";
-			// oList++;
-			cout << "- - - - - - - - - - - - - - - - - -\n";
-			cout << "Enter an integer from 1 to " << oList << ":  ";
+			cout << "Enter an integer from 1 to " << oList + secondColumn << ":  ";
 			cin >> menu;
-			if (menu == 16)
-				menu += 3;
-			else if (menu == 19)
-				menu -= 3;
-			validate(menu, 1, oList);			
+			validate(menu, 1, oList + secondColumn);			
 			
 			switch(menu)
 			{	

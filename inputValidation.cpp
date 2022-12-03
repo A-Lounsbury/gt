@@ -9,6 +9,7 @@ Purpose: function for validating input
 #include <limits>
 using namespace std;
 
+// checks a <= n <= b
 void validate(int &n, int a, int b)
 {
 	while (!cin)
