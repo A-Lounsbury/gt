@@ -13,6 +13,7 @@ Purpose: terms in Polynomial.h
 #include <vector>
 using namespace std;
 
+// list nodes (terms) of the form [coefficient, exponents]
 struct Term
 {
 	double coefficient;

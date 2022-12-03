@@ -10,6 +10,7 @@ Purpose: class for simultaneous aspects of games
 #include "Player.h"
 #include "LinkedList.h"
 
+// a vector of matrices (vectors of vectors) of linked lists and relevant data
 template <typename T>
 class simGame
 {

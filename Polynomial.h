@@ -22,6 +22,7 @@ Purpose: for holding EU's
 #include <vector>
 using namespace std;
 
+// polynomials of the form [coefficient, exponents] -> ... -> [coefficient, exponents]
 class Polynomial
 {
 	private:

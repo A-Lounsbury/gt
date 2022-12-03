@@ -9,6 +9,7 @@ Purpose: class for sequential game tree nodes
 #define TREENODE_H
 #include "Player.h"
 
+// tree node for search tree (payoff tree)
 class TreeNode
 {
 	private:

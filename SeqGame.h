@@ -10,6 +10,7 @@ Purpose: class for sequential aspects of games
 #include "Player.h"
 #include "TreeNode.h"
 
+// WIP, search tree of payoffs
 class SeqGame
 {
 	private:

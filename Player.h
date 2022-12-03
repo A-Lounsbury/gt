@@ -19,6 +19,7 @@ Purpose: Game theory program
 #include <ctime>
 using namespace std;
 
+// player class for simGame.h
 class Player
 {
 	private:
