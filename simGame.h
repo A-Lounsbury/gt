@@ -169,6 +169,7 @@ class simGame
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// constructor
 template <typename T>
 simGame<T>::simGame(int nP)
 {
@@ -264,6 +265,7 @@ simGame<T>::simGame(int nP)
 	isMixed();
 }
 
+// destructor
 template <typename T>
 simGame<T>::~simGame()
 {
@@ -276,6 +278,7 @@ simGame<T>::~simGame()
 				delete payoffMatrix.at(m).at(i).at(j);
 }
 
+// add Player and set attributes
 template <typename T>
 void simGame<T>::addPlayer() // FINISH: choice, preference
 {
@@ -420,8 +423,10 @@ void simGame<T>::addPlayer() // FINISH: choice, preference
 	printPayoffMatrix();
 }
 
+// add strategy and payoffs for all players
+// FINISH
 template <typename T>
-void simGame<T>::addStrategy(int x) // FINISH
+void simGame<T>::addStrategy(int x)
 {	
 	int val = -1;
 	LinkedList<T>* curList;
@@ -555,6 +560,7 @@ void simGame<T>::addStrategy(int x) // FINISH
 	printPayoffMatrix();
 }
 
+// check if all equilibria are equal
 template <typename T>
 bool simGame<T>::allEqualEquilibria()
 {	
@@ -570,7 +576,7 @@ bool simGame<T>::allEqualEquilibria()
 	return true;
 }
 
-// a and b are equilibria
+// Battle of Sexes relation between equilibria
 template <typename T>
 bool simGame<T>::bosCondition(vector<int> eq1, vector<int> eq2) // FINISH: access all values in entries X, Y, W, and Z 
 {
@@ -595,6 +601,7 @@ bool simGame<T>::bosCondition(vector<int> eq1, vector<int> eq2) // FINISH: acces
 		return false;
 }
 
+// change an individual payoff
 template <typename T>
 void simGame<T>::changeAPayoff(int x) // FINISH
 {
@@ -617,8 +624,10 @@ void simGame<T>::changeAPayoff(int x) // FINISH
 	curList->setNodeValue(x, val);
 }
 
+// change all payoffs for a player
+// FINISH
 template <typename T>
-void simGame<T>::changePayoffs(int x) // FINISH
+void simGame<T>::changePayoffs(int x)
 {
 	int val = -1;
 	LinkedList<T>* curList;
@@ -635,6 +644,7 @@ void simGame<T>::changePayoffs(int x) // FINISH
 		}
 }
 
+// checks if Battle of Sexes using bosCondition
 /************************************************************************
 at least 2 PO equilibria
 player prefers an equilibrium different from what the other players want
@@ -667,6 +677,7 @@ bool simGame<T>::checkBOSConditions()
 	return true;
 }
 
+// checks if Chicken using chickenCondition
 /******************************************************************************
 at least 2 PO equilibria
 each player prefers an outcome different from what the other players want, 
@@ -722,6 +733,7 @@ bool simGame<T>::checkChickenConditions() // FINISH
 	return true;
 }
 
+// checks if Invisible Hand using ihCondition
 /********************************************************
 at least 1 PO equilibrium
 all equal if more than one
@@ -754,6 +766,7 @@ bool simGame<T>::checkIHConditions() // TEST: ktest6.txt gives IH
 	return true;
 }
 
+// checks if Null game
 template <typename T>
 bool simGame<T>::checkNullCondition()
 {
@@ -781,6 +794,7 @@ bool simGame<T>::checkNullCondition()
 	return true;
 }
 
+// checks if Prisoner's Dilemma using pdCondition
 /************************************************************
 at least 1 non-PO equilibrium
 all equal if more than one
@@ -808,6 +822,7 @@ bool simGame<T>::checkPDConditions()
 	return true;
 }
 
+// checks if Stag Hunt using shCondition
 /************************************************************************************************************
 at least 1 PO equilibrium and at least 1 non-PO equilibrium
 each player is guaranteed a non-optimal payoff for choosing the strategy corresponding to the non-PO outcome
@@ -864,6 +879,7 @@ bool simGame<T>::checkZSConditions() // FIX
 	return true;
 }
 
+// Chicken relation between equilibria
 template <typename T>
 bool simGame<T>::chickenCondition(vector<int> eq1, vector<int> eq2) // FINISH: access all values in entries X, Y, W, and Z
 {
@@ -927,6 +943,7 @@ bool simGame<T>::chickenCondition(vector<int> eq1, vector<int> eq2) // FINISH: a
 		return false;
 }
 
+// checks if common knowledge
 template <typename T>
 bool simGame<T>::commonKnowledge() const
 {
@@ -944,6 +961,7 @@ bool simGame<T>::commonKnowledge() const
 	return true;
 }
 
+// add communication
 template <typename T>
 void simGame<T>::communication() // FINISH: knowledge
 {
@@ -1083,6 +1101,7 @@ void simGame<T>::communication() // FINISH: knowledge
 		cout << "no\n";
 }
 
+// compute BR's
 template <typename T>
 void simGame<T>::computeBestResponses() // FIX: create maxPayoff() function like maxStrat()
 {
@@ -1195,6 +1214,7 @@ void simGame<T>::computeBestResponses() // FIX: create maxPayoff() function like
 	}
 }
 
+// compute choices
 template <typename T>
 void simGame<T>::computeChoices() // FINISH: knowledge; ktest3.txt outcome on ktest1.txt, 4players.txt
 {	
@@ -1258,8 +1278,10 @@ void simGame<T>::computeChoices() // FINISH: knowledge; ktest3.txt outcome on kt
 	}
 }
 
+// compute expected utilities
+// FIX: index, coeffs, send exponents to the polynomials
 template <typename T>
-vector<vector<Polynomial*> > simGame<T>::computeExpectedUtilities() // FIX: index, coeffs, send exponents to the polynomials
+vector<vector<Polynomial*> > simGame<T>::computeExpectedUtilities()
 {
 	// choose player, then choose strategy
 	Polynomial* poly;
@@ -1453,6 +1475,7 @@ vector<vector<Polynomial*> > simGame<T>::computeExpectedUtilities() // FIX: inde
 	}
 }
 
+// compute impartiality
 template <typename T>
 void simGame<T>::computeImpartiality()
 {
@@ -1468,8 +1491,10 @@ void simGame<T>::computeImpartiality()
 	impartial = true;
 }
 
+// compute k-strategies
+// FINISH: 3players.txt gives mixed k-strategies
 template <typename T>
-void simGame<T>::computeKStrategies() // FINISH: 3players.txt gives mixed k-strategies
+void simGame<T>::computeKStrategies()
 {	
 	int maxStrat = -std::numeric_limits<int>::max();
 	int num = -1;
@@ -1535,6 +1560,7 @@ void simGame<T>::computeKStrategies() // FINISH: 3players.txt gives mixed k-stra
 	return;
 }
 
+// compute mixed equilibria
 template <typename T>
 void simGame<T>::computeMixedEquilibria()
 {
@@ -1573,8 +1599,10 @@ void simGame<T>::computeMixedEquilibria()
 	}
 }
 
+// compute mixed strategies
+// FINISH
 template <typename T>
-void simGame<T>::computeMixedStrategies() // FINISH
+void simGame<T>::computeMixedStrategies()
 {
 	vector<int> coeffs1 = vector<int>(players.at(0)->getNumStrats()); // coefficients for P_1's expected utilities
 	vector<int> coeffs2 = vector<int>(players.at(1)->getNumStrats()); // coefficients for P_2's expected utilities
@@ -1614,6 +1642,7 @@ void simGame<T>::computeMixedStrategies() // FINISH
 	*/
 }
 
+// compute total number of outcomes
 template <typename T>
 void simGame<T>::computeNumOutcomes()
 {
@@ -1623,6 +1652,7 @@ void simGame<T>::computeNumOutcomes()
 	setNumOutcomes(num);
 }
 
+// compute pure equilibria
 template <typename T>
 void simGame<T>::computePureEquilibria()
 {
@@ -1664,6 +1694,7 @@ void simGame<T>::computePureEquilibria()
 		}
 }
 
+// check if all strats in equilibrium are equal
 template <typename T>
 bool simGame<T>::coordination()
 {
@@ -1671,15 +1702,17 @@ bool simGame<T>::coordination()
 	{
 		for (int x = 1; x < numPlayers; x++)
 		{
-			if (getPureEquilibrium(n).at(0) != getPureEquilibrium(n).at(x)) // check if all strats in equilibrium are equal
+			if (getPureEquilibrium(n).at(0) != getPureEquilibrium(n).at(x))
 				return false;
 		}
 	}
 	return true;
 }
 
+// determine a game's type
+// FINISH: for nP > 2; ktest6.txt gives IH
 template <typename T>
-void simGame<T>::determineType() // FINISH: for nP > 2; ktest6.txt gives IH
+void simGame<T>::determineType()
 {
 	if (checkNullCondition())
 		null = true;
@@ -1722,8 +1755,10 @@ void simGame<T>::determineType() // FINISH: for nP > 2; ktest6.txt gives IH
 		sh = false;
 }
 
+// edit a single player's info
+// FINISH
 template <typename T>
-void simGame<T>::editPlayer() // FINISH
+void simGame<T>::editPlayer()
 {
 	int index = -1, menu = -1, r = -1;
 	
@@ -1788,6 +1823,7 @@ int simGame<T>::entryBestResponseLengths(int m, int i, int j) // TEST
 }
 */
 
+// get entry length
 template <typename T>
 int simGame<T>::entryLength(vector<vector<vector<bool> > > extraSpaces, int m, int i, int j) // TEST
 {
@@ -1823,11 +1859,10 @@ int simGame<T>::entryLength(vector<vector<vector<bool> > > extraSpaces, int m, i
 	return length;
 }
 
+// returns length of the specific ij-entry in matrix m
 template <typename T>
 int simGame<T>::entryPayoffLengths(int m, int i, int j)
 {
-	// returns length of the specific ij-entry in matrix m
-	
 	LinkedList<T>* curList;
 	string str;
 	int length = 0;
@@ -1841,8 +1876,10 @@ int simGame<T>::entryPayoffLengths(int m, int i, int j)
 	return length;
 }
 
+// prompt for a strategy profile
+// TEST
 template <typename T>
-vector<int> simGame<T>::enterStratProfile() // TEST
+vector<int> simGame<T>::enterStratProfile()
 {
 	vector <int> stratProfile = vector<int>(numPlayers);
 	
@@ -1859,6 +1896,7 @@ vector<int> simGame<T>::enterStratProfile() // TEST
 	return stratProfile;
 }
 
+// checks if a and b are equal
 template <typename T>
 bool simGame<T>::equalEquilibria(int a, int b)
 {
@@ -1873,12 +1911,12 @@ bool simGame<T>::equalEquilibria(int a, int b)
 	return true;
 }
 
-template <typename T>
-vector<vector<vector<bool> > > simGame<T>::extraSpacesInColumns() // FINISH
-{
-	/* used for payoffs that are NOT best responses
+/* used for payoffs that are NOT best responses
 	keeps track of which players in which columns need to have a space added */
-	
+// FINISH
+template <typename T>
+vector<vector<vector<bool> > > simGame<T>::extraSpacesInColumns()
+{	
 	int numBestResponses = 0;
 	LinkedList<int>* curList;
 	vector<vector<vector<bool> > > playersInColumns = vector<vector<vector<bool> > >(payoffMatrix.size());
@@ -1932,6 +1970,7 @@ vector<vector<vector<bool> > > simGame<T>::extraSpacesInColumns() // FINISH
 	return playersInColumns;
 }
 
+// converts a sequence of strategies into the index in a stack of payoff arrays that correspond to that sequence
 template <typename T>
 int simGame<T>::hash(vector<int> profile)
 {
@@ -1970,6 +2009,7 @@ int simGame<T>::hash(vector<int> profile)
 	return num;
 }
 
+// checks if the game is mixed
 template <typename T>
 void simGame<T>::isMixed()
 {
@@ -2000,14 +2040,17 @@ void simGame<T>::isMixed()
 	mixed = false;
 }
 
+// checks if a strategy is inferior (dominated)
+// FINISH
 template <typename T>
-bool simGame<T>::isInferior() // FINISH
+bool simGame<T>::isInferior()
 {
 	
 	
 	return false;
 }
 
+// checks if profile is a pure equilibrium
 template <typename T>
 bool simGame<T>::isPureEquilibrium(vector<int> profile)
 {
@@ -2031,6 +2074,7 @@ B | 1, 0 | 1, 0
 - everything is a best response
 - everything is better
 *****************************/
+// checks if s is strictly dominant
 template <typename T>
 bool simGame<T>::isStrictlyDominant(int x, int s) // FIX: 3players.txt ---> communication(), reduce(); want to past just the strategy
 {	
@@ -2104,6 +2148,7 @@ bool simGame<T>::isStrictlyDominant(int x, int s) // FIX: 3players.txt ---> comm
 	return true;
 }
 
+// checks if s is strictly dominated
 template <typename T>
 bool simGame<T>::isStrictlyDominated(int x, int s)
 {
@@ -2227,6 +2272,7 @@ bool simGame<T>::isStrictlyDominated(int x, int s)
 	}
 }
 
+// checks if s is weakly dominant
 /* A is weakly dominant over B for P_1
           A      |       B      |       C  
 A | [2,1], [0,1] | [1,1], [0,1] | [1,1], [0,1] <--
@@ -2238,8 +2284,9 @@ everything is a best response
 at least one payoff is better
 the rest are at greater than or equal to the highest payoff for that strategy
 *****************************************************************************/
+// FIX: current written as isWeaklyDominated
 template <typename T>
-bool simGame<T>::isWeaklyDominant(int x, int s) // FIX: current written as isWeaklyDominated
+bool simGame<T>::isWeaklyDominant(int x, int s)
 {	
 	LinkedList<T>* curList;
 	LinkedList<T>* sList;
@@ -2355,6 +2402,7 @@ bool simGame<T>::isWeaklyDominant(int x, int s) // FIX: current written as isWea
 	return true;
 }
 
+// checks if s is weakly dominated
 /* B is weakly dominated by A for P_1
           A      |       B      |       C  
 A | [2,1], [0,1] | [1,1], [0,1] | [1,1], [0,1] <--
@@ -2481,11 +2529,11 @@ bool simGame<T>::isWeaklyDominated(int x, int s)
 	return true;
 }
 
+// returns vector w/ maximum number of characters added by brackets in BR's in each column
+// FIX
 template <typename T>
-vector<vector<int> > simGame<T>::maxBestResponseLengths() // FIX
+vector<vector<int> > simGame<T>::maxBestResponseLengths()
 {	
-	// returns vector w/ maximum number of characters added by brackets in BR's in each column
-	
 	int temp = 0; // holds values while finding the max
 	LinkedList<T>* curList;
 	string str;
@@ -2580,13 +2628,12 @@ vector<vector<int> > simGame<T>::maxEntryLengths(vector<vector<vector<bool> > > 
 	return lengths;
 }*/
 
+// returns the maximum payoff in a specific row, column, or section of matrices
+// in the third case, it is comparing the values for the same ij-entry of each matrix
+// in the section
 template <typename T>
 int simGame<T>::maxPayoffInRowColOrMatrices(int x, vector<int> choices) // FIX: x >= 2 called from isStrictlyDominant() called from communication()
-{
-	// returns the maximum payoff in a specific row, column, or section of matrices
-	// in the third case, it is comparing the values for the same ij-entry of each matrix
-	// in the section
-	
+{	
 	int maxVal = -std::numeric_limits<int>::max();
 	LinkedList<T>* curList;
 	
@@ -2626,12 +2673,11 @@ int simGame<T>::maxPayoffInRowColOrMatrices(int x, vector<int> choices) // FIX: 
 	return maxVal;
 }
 
+/* returns maximum number of characters of 
+	all n-tuples of payoffs in each column */
 template <typename T>
 vector<vector<int> > simGame<T>::maxPayoffLengths()
-{	
-	/* returns maximum number of characters of 
-	all n-tuples of payoffs in each column */
-	
+{		
 	int temp = 0; // holds values while finding the max
 	LinkedList<T>* curList;
 	string str;
@@ -2659,8 +2705,10 @@ vector<vector<int> > simGame<T>::maxPayoffLengths()
 	return lengths;
 }
 
+// finds the max strat in a row, col, or matrix based on a set of other predetermined choices
+// FIX: isWeaklyDominant not needed; 3players.txt in commication()
 template <typename T>
-int simGame<T>::maxStratInRowColOrMatrices(int x, vector<int> choices) // FIX: isWeaklyDominant not needed; 3players.txt in commication()
+int simGame<T>::maxStratInRowColOrMatrices(int x, vector<int> choices)
 {	
 	bool firstMaxFound = false;
 	int maxStrat = -std::numeric_limits<int>::max();
@@ -2711,10 +2759,10 @@ int simGame<T>::maxStratInRowColOrMatrices(int x, vector<int> choices) // FIX: i
 	return maxStrat;
 }
 
+// returns the strategy that gives P_x's maximum payoff over all outcomes
 template <typename T>
 int simGame<T>::maxStrat(int x)
 {
-	// returns the strategy that gives P_x's maximum payoff over all outcomes
 	// cout << "MAXSTRAT\n";
 	
 	int maxStrat = 0, maxVal = -std::numeric_limits<int>::max();
@@ -2768,6 +2816,7 @@ int simGame<T>::maxStrat(int x)
 	return maxStrat;
 }
 
+// checks if strategy is Pareto-optimal
 template <typename T>
 bool simGame<T>::PO(vector<int> stratProfile) // FINISH: maybe don't compare same player with himself
 {
@@ -2956,6 +3005,7 @@ bool simGame<T>::PO(vector<int> stratProfile) // FINISH: maybe don't compare sam
 	}
 }
 
+// print BR's
 template <typename T>
 void simGame<T>::printBestResponses()
 {
@@ -3081,6 +3131,7 @@ void simGame<T>::printBestResponses()
 		cout << "Undetermined\n";
 }
 
+// print payoffs and BR's separately
 template <typename T>
 void simGame<T>::printBothSeparately()
 {
@@ -3226,8 +3277,10 @@ void simGame<T>::printBothSeparately()
 	}
 }
 
+// print k-matrix
+// FINISH: 3players.txt gives mixed k-strategies
 template <typename T>
-void simGame<T>::printKMatrix() // FINISH: 3players.txt gives mixed k-strategies
+void simGame<T>::printKMatrix()
 {
 	char save = '\n';
 	LinkedList<T>* curList;
@@ -3447,8 +3500,9 @@ void simGame<T>::printKMatrix() // FINISH: 3players.txt gives mixed k-strategies
 		saveKMatrixAsLatex(choices, EU);
 }
 
+// NOT USED?
 template <typename T>
-void simGame<T>::printKOutcomes() // NOT USED?
+void simGame<T>::printKOutcomes()
 {
 	cout << "PRINTKOUTCOMES\n";
 	
@@ -3469,16 +3523,18 @@ void simGame<T>::printKOutcomes() // NOT USED?
 	cout << "}\n\n";
 }
 
+// NOT USED?
 template <typename T>
-void simGame<T>::printKOutcomeProbabilities() // NOT USED?
+void simGame<T>::printKOutcomeProbabilities()
 {
 	for (int i = 0; i < getSizeKOutcomeProbabilities(); i++)
 		cout << getOutcomeProbability(i) << endl;
 	cout << endl;
 }
 
+// NOT USED?
 template <typename T>
-void simGame<T>::printKProbabilities() // NOT USED?
+void simGame<T>::printKProbabilities()
 {
 	cout << endl;
 	for (int i = 0; i < 4; i++)
@@ -3486,8 +3542,9 @@ void simGame<T>::printKProbabilities() // NOT USED?
 	cout << endl;
 }
 
+// NOT USED
 template <typename T>
-void simGame<T>::printKStrategies() // NOT USED
+void simGame<T>::printKStrategies()
 {
 	cout << "    P\n";
 	cout << "    ";
@@ -3504,8 +3561,10 @@ void simGame<T>::printKStrategies() // NOT USED
 	cout << endl;
 }
 
+// print payoff matrix
+// FIX: spacing of P_2's strat labels
 template <typename T>
-void simGame<T>::printPayoffMatrix() // FIX: spacing of P_2's strat labels
+void simGame<T>::printPayoffMatrix()
 {
 	// cout << "PRINTPAYOFFMATRIX\n";
 	
@@ -3682,8 +3741,10 @@ void simGame<T>::printPayoffMatrix() // FIX: spacing of P_2's strat labels
 		cout << "Undetermined\n";
 }
 
+// print payoff matrix without info
+// FIX: spacing of P_2's strat labels
 template <typename T>
-void simGame<T>::printPayoffMatrixSansInfo() // FIX: spacing of P_2's strat labels
+void simGame<T>::printPayoffMatrixSansInfo()
 {	
 	LinkedList<T>* curList;
 	vector<int> choices = vector<int>(numPlayers);
@@ -3760,6 +3821,7 @@ void simGame<T>::printPayoffMatrixSansInfo() // FIX: spacing of P_2's strat labe
 	}
 }
 
+// print payoffs
 template <typename T>
 void simGame<T>::printPayoffs()
 {	
@@ -3890,6 +3952,7 @@ void simGame<T>::printPayoffs()
 		cout << "Undetermined\n";
 }
 
+// print a single player's info
 template <typename T>
 void simGame<T>::printPlayer() const
 {
@@ -3904,6 +3967,7 @@ void simGame<T>::printPlayer() const
 	cout << *players.at(index - 1);
 }
 
+// print all players' info
 template <typename T>
 void simGame<T>::printPlayers() const
 {
@@ -3916,6 +3980,7 @@ void simGame<T>::printPlayers() const
 	}
 }
 
+// print pure equilibria
 template <typename T>
 void simGame<T>::printPureEquilibria()
 {	
@@ -3966,6 +4031,7 @@ void simGame<T>::printPureEquilibria()
 	}
 }
 
+// produce a random game with payoffs between 0 and 100
 template <typename T>
 void simGame<T>::randGame() // FIX: gives a suspiciously large amount of IH's, lots of incorrect IH's; randomizes individual payoffs rather than game types
 {
@@ -4091,8 +4157,10 @@ void simGame<T>::randGame() // FIX: gives a suspiciously large amount of IH's, l
 	printPayoffMatrix();
 }
 
+// chooses a random game type
+// FINISH
 template <typename T>
-void simGame<T>::randType() // FINISH
+void simGame<T>::randType()
 {
 	bool changeNumStratsP1 = false, changeNumStratsP2 = false, changeNumStratsPastP2 = false;
 	bool addMoreOutcomesPast2 = false; // kMatrix
@@ -4334,6 +4402,7 @@ void simGame<T>::randType() // FINISH
 	printPayoffMatrix();
 }
 
+// read game from file
 template <typename T>
 void simGame<T>::readFromFile()
 {
@@ -4494,6 +4563,7 @@ void simGame<T>::readFromFile()
 	printPayoffMatrix();
 }
 
+// removes strictly dominated strategies that will never be played (?)
 template <typename T>
 void simGame<T>::reduce()
 {
@@ -4547,6 +4617,7 @@ void simGame<T>::reduce()
 	cout << "P_" << index << " has been removed.\n";
 }*/
 
+// remove strategy s from player P_x
 template <typename T>
 void simGame<T>::removeStrategy(int x, int s)
 {
@@ -4659,8 +4730,10 @@ void simGame<T>::removeStrategy(int x, int s)
 		impartial = false;
 }
 
+// prevents removal of a strategy
+// FINISH: >=3 players?
 template <typename T>
-void simGame<T>::removeStrategyPrompt(int x) // FINISH: >=3 players?
+void simGame<T>::removeStrategyPrompt(int x)
 {
 	if (players.at(x)->getNumStrats() == 2)
 	{
@@ -4704,6 +4777,7 @@ void simGame<T>::removeStrategyPrompt(int x) // FINISH: >=3 players?
 	}
 }
 
+// converts a sequence of strategies into the index in a stack of payoff arrays that correspond to that sequence
 template <typename T>
 int simGame<T>::rHash(vector<int> rationalityProfile)
 {	
@@ -4718,6 +4792,7 @@ int simGame<T>::rHash(vector<int> rationalityProfile)
 	return num;
 }
 
+// converts an index in a stack of payoff arrays into the sequence of strategies that produce that index
 template <typename T>
 vector<int> simGame<T>::rUnhash(int matrixIndex)
 {
@@ -4744,6 +4819,7 @@ vector<int> simGame<T>::rUnhash(int matrixIndex)
 	return rationalityProfile;
 }
 
+// save k-matrix to be displayed in LaTeX
 template <typename T>
 void simGame<T>::saveKMatrixAsLatex(vector<int> choices, vector<double> EU) // FINISH
 {
@@ -4888,6 +4964,7 @@ void simGame<T>::saveKMatrixAsLatex(vector<int> choices, vector<double> EU) // F
 	}
 }
 
+// save payoff matrix to be displayed in LaTeX
 template <typename T>
 void simGame<T>::savePayoffMatrixAsLatex() // FIX
 {
@@ -4994,6 +5071,7 @@ void simGame<T>::savePayoffMatrixAsLatex() // FIX
 	}	
 }
 
+// save game data to file
 template <typename T>
 void simGame<T>::saveToFile()
 {
@@ -5055,6 +5133,7 @@ void simGame<T>::saveToFile()
 	}
 }
 
+// set numStrats for all players
 template <typename T>
 void simGame<T>::setAllNumStrats(char impartial)
 {
@@ -5103,6 +5182,7 @@ void simGame<T>::setAllNumStrats(char impartial)
 	}
 }
 
+// set rationalities for all players
 template <typename T>
 void simGame<T>::setAllRationalities()
 {
@@ -5118,6 +5198,7 @@ void simGame<T>::setAllRationalities()
 	}
 }
 
+// Stag Hunt relation between equilibria
 template <typename T>
 bool simGame<T>::shCondition(vector<int> eq1, vector<int> eq2) // FINISH: access all values in entries X, Y, W, and Z
 {
@@ -5213,6 +5294,7 @@ bool simGame<T>::shCondition(vector<int> eq1, vector<int> eq2) // FINISH: access
 		return false;
 }
 
+// solve polynomial equation for x
 template <typename T>
 double simGame<T>::solve(Polynomial* p1, Polynomial* p2) // FIX
 {
@@ -5284,6 +5366,7 @@ double simGame<T>::solve(Polynomial* p1, Polynomial* p2) // FIX
 	}
 }
 
+// converts an index in a stack of payoff arrays into the sequence of strategies that produce that index
 template <typename T>
 vector<int> simGame<T>::unhash(int m)
 {
