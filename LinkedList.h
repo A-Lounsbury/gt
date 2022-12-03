@@ -66,6 +66,7 @@ LinkedList<T>::~LinkedList()
 	}
 }
 
+// append node to tail of list
 template<typename T>
 void LinkedList<T>::appendNode(T nodeValue, bool br)
 {
@@ -89,6 +90,7 @@ void LinkedList<T>::appendNode(T nodeValue, bool br)
 	numNodes++;
 }
 
+// delete specific node from list
 template<typename T>
 void LinkedList<T>::deleteNode(int position)
 {	
@@ -127,6 +129,7 @@ void LinkedList<T>::deleteNode(int position)
 	numNodes--;
 }
 
+// print BR's as n-tuple
 template<typename T>
 void LinkedList<T>::displayBRs() const
 {
@@ -159,6 +162,7 @@ void LinkedList<T>::displayBRs() const
 	}
 }
 
+// print payoffs and BR's as n-tuple
 template<typename T>
 void LinkedList<T>::displayList(vector<vector<vector<bool> > > extraSpaces, int m, int j) const // FINISH: spacing for bracketed br notation
 {
@@ -209,6 +213,7 @@ void LinkedList<T>::displayList(vector<vector<vector<bool> > > extraSpaces, int 
 	}
 }
 
+// print payoffs as n-tuple
 template<typename T>
 void LinkedList<T>::displayPayoffs() const
 {
@@ -232,6 +237,7 @@ void LinkedList<T>::displayPayoffs() const
 	}
 }
 
+// get node value
 template<typename T>
 T LinkedList<T>::getNodeValue(int position)
 {
@@ -260,6 +266,7 @@ T LinkedList<T>::getNodeValue(int position)
 	return -std::numeric_limits<int>::max();
 }
 
+// get node BR
 template<typename T>
 bool LinkedList<T>::getNodeBestResponse(int position)
 {
@@ -290,8 +297,9 @@ bool LinkedList<T>::getNodeBestResponse(int position)
 	return false;
 }
 
+// returns the position of a payoff in the list
 template<typename T>
-int LinkedList<T>::getPos(string name) const // returns the position of a payoff in the list
+int LinkedList<T>::getPos(string name) const
 {
 	ListNode* curNode;
 	int pos;
@@ -310,6 +318,7 @@ int LinkedList<T>::getPos(string name) const // returns the position of a payoff
 	return -1; // not found
 }
 
+// insert a node at position
 template<typename T>
 void LinkedList<T>::insertNode(T nodeValue, int position)
 {
@@ -359,6 +368,7 @@ void LinkedList<T>::insertNode(T nodeValue, int position)
 	}
 }
 
+// set node BR
 template<typename T>
 void LinkedList<T>::setNodeBestResponse(int position, bool val)
 {
@@ -392,6 +402,7 @@ void LinkedList<T>::setNodeBestResponse(int position, bool val)
 	return;
 }
 
+// set node value
 template<typename T>
 void LinkedList<T>::setNodeValue(int position, int val)
 {

@@ -52,9 +52,10 @@ void validateDouble(double &n, int a, int b)
 	}
 }
 
+// checks if choice is y, Y, n, or N
 void validateChar(char &choice)
 {
-	while (choice != 'y' && choice != 'n')
+	while (choice != 'y' && choice != 'Y' && choice != 'n' && choice != 'N')
 	{
 		cin.clear();
 		cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -64,6 +65,7 @@ void validateChar(char &choice)
 	}
 }
 
+// checks if 2 < n < 4
 void validateNumPlayers(int &n)
 {
 	while (n < 2 || n > 4)
@@ -80,6 +82,7 @@ void validateNumPlayers(int &n)
 	}
 }
 
+// checks 2 < n < b
 void validateNumStrats(int &n, int b)
 {
 	while (n < 2 || n > b)
@@ -96,6 +99,7 @@ void validateNumStrats(int &n, int b)
 	}
 }
 
+// ensures n is an integer
 void validateTypeInt(int &n)
 {
 	while (!cin)
@@ -109,6 +113,7 @@ void validateTypeInt(int &n)
 	}
 }
 
+// ensures n is a double
 void validateTypeDouble(double &n)
 {
 	while (!cin)
