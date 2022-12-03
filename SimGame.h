@@ -279,8 +279,9 @@ simGame<T>::~simGame()
 }
 
 // add Player and set attributes
+// FINISH: choice, preference
 template <typename T>
-void simGame<T>::addPlayer() // FINISH: choice, preference
+void simGame<T>::addPlayer()
 {
 	// char option;
 	int c = -1, nS = -1, r = 0;
