@@ -10,6 +10,7 @@ Purpose: Linked list class for game theory program
 #include <iostream>
 using namespace std;
 
+// linked list (payoff matrix entry) of the form [payoff, BR] -> ... -> [payoff, BR]
 template<typename T>
 class LinkedList
 {

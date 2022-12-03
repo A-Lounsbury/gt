@@ -8,6 +8,7 @@ Purpose: struct for linked list entries in payoff matrices
 #ifndef LISTNODE_H
 #define LISTNODE_H
 
+// list node of the form [value, bestResponse]
 template <typename T>
 struct ListNode
 {
