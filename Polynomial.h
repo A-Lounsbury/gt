@@ -93,6 +93,7 @@ class Polynomial
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// constructor
 Polynomial::Polynomial() // FINISH
 {
 	leading = NULL;
@@ -204,6 +205,7 @@ Polynomial::Polynomial(int nT, int nV, int var) // FINISH
 	linear = true;
 }
 
+// destructor
 Polynomial::~Polynomial()
 {
 	Term* curTerm;
@@ -298,6 +300,7 @@ Polynomial::~Polynomial()
 	return poly;
 }*/
 
+// polynomial multiplication
 Polynomial Polynomial::operator*(const Polynomial &p)
 {
 	int nV = this->getNumVariables();
@@ -318,6 +321,7 @@ Polynomial Polynomial::operator*(const Polynomial &p)
 	return *poly;
 }
 
+// polynomial subtraction
 Polynomial* Polynomial::operator-(const Polynomial &p)
 {
 	// cout << "SUBTRACTION\n";
@@ -390,6 +394,7 @@ Polynomial* Polynomial::operator-(const Polynomial &p)
 	return poly;
 }
 
+// polynomial equality
 bool Polynomial::operator==(const Polynomial &p)
 {
 	if (this->getTotalDegree() != p.getTotalDegree() || this->getNumTerms() != p.getNumTerms())
@@ -406,6 +411,7 @@ bool Polynomial::operator==(const Polynomial &p)
 	return true;
 }
 
+// polynomial inequality
 bool Polynomial::operator!=(const Polynomial &p)
 {
 	if (*this == p)
@@ -414,6 +420,7 @@ bool Polynomial::operator!=(const Polynomial &p)
 		return true;
 }
 
+// polynomial order, less than
 bool Polynomial::operator<(const Polynomial &p) // FINISH
 {
 	// x^alpha = a_0x^alpha_0 + a_1x^alpha_1 + ... + a_{nT-2}x^alpha_{nT-2} + a_{nT-1}x^alpha_{nT-1}
@@ -444,6 +451,7 @@ bool Polynomial::operator<(const Polynomial &p) // FINISH
 	return true;
 }
 
+// polynomial order, greater than
 bool Polynomial::operator>(const Polynomial &p)
 {
 	if (*this == p || *this < p)
@@ -452,6 +460,7 @@ bool Polynomial::operator>(const Polynomial &p)
 		return true;
 }
 
+// add a term
 void Polynomial::addTerm(int coeff, vector<int> expo) // TEST
 {
 	cout << "ADDTERM other\n";
@@ -487,6 +496,7 @@ void Polynomial::addTerm(int coeff, vector<int> expo) // TEST
 	numTerms++;
 }
 
+// add a term
 void Polynomial::addTerm(Term* term) // TEST
 {
 	cout << "ADDTERM\n";
@@ -522,6 +532,7 @@ void Polynomial::addTerm(Term* term) // TEST
 	cout << endl;
 }
 
+// get total degree
 void Polynomial::computeTotalDegree()
 {
 	int sum = 0, max = 0;
@@ -537,7 +548,9 @@ void Polynomial::computeTotalDegree()
 	setTotalDegree(max);
 }
 
-Polynomial* Polynomial::derivative(int var) // FINISH: linear derivatives from nonlinear polynomials
+// get derivative
+// FINISH: linear derivatives from nonlinear polynomials
+Polynomial* Polynomial::derivative(int var)
 {
 	// computes the derivative of this wrt to the var-th variable
 	
@@ -575,6 +588,7 @@ Polynomial* Polynomial::derivative(int var) // FINISH: linear derivatives from n
 	return poly;
 }
 
+// enter info
 /* separate bc mixed strategies doesn't 
 require the user to enter info */
 void Polynomial::enterInfo()
@@ -659,6 +673,7 @@ void Polynomial::enterInfo()
 	computeTotalDegree();
 }
 
+// evaluate polynomial function at val
 double Polynomial::eval(double val)
 {
 	double num = 1.0, sum = 0.0;
@@ -679,11 +694,10 @@ double Polynomial::eval(double val)
 	}
 }
 
+// computes derivatives up to the (n + 1)-th derivative wrt the v-th variable
 Polynomial* Polynomial::getDerivative(int n, int v)
 {
 	bool loop = false;
-	
-	// computes derivative up to the (n + 1)-th derivative wrt the v-th variable
 	
 	// Resizing derivatives
 	if (getSizeDerivatives() < v + 1)
@@ -718,6 +732,7 @@ Polynomial* Polynomial::getDerivative(int n, int v)
 	return derivatives.at(v).at(n);
 }
 
+// get nonzero exponent
 // for linear polynomials
 int Polynomial::getNonZeroExpo(int t) const
 { 
@@ -729,6 +744,7 @@ int Polynomial::getNonZeroExpo(int t) const
 	return (numTerms - 1);
 }
 
+// get term
 Term* Polynomial::getTerm(int t) const
 {
 	int count = 0;
@@ -743,6 +759,7 @@ Term* Polynomial::getTerm(int t) const
 	return curTerm;
 }
 
+// insert term
 void Polynomial::insertTerm(int t, vector<int> expo, int coeff)
 {
 	Term* newTerm = new Term;
@@ -765,6 +782,7 @@ void Polynomial::insertTerm(int t, vector<int> expo, int coeff)
 	numTerms++;
 }
 
+// insert term
 void Polynomial::insertTerm(int t, Term* term)
 {	
 	if (t == 0)
@@ -780,6 +798,7 @@ void Polynomial::insertTerm(int t, Term* term)
 	numTerms++;
 }
 
+// integrate
 Polynomial* Polynomial::integrate(int var) // FINISH (... + c)
 {
 	Polynomial* poly = new Polynomial(getNumTerms(), getNumVariables(), 0);
@@ -802,6 +821,7 @@ Polynomial* Polynomial::integrate(int var) // FINISH (... + c)
 	return poly;
 }
 
+// integrate over [a, b]
 double Polynomial::integrateOverInterval(double a, double b, int var)
 {
 	// cout << "INTEGRATEOVER\n";
@@ -827,6 +847,7 @@ double Polynomial::integrateOverInterval(double a, double b, int var)
 	return num;
 }
 
+// checks if constant
 bool Polynomial::isConstant()
 {
 	bool allExpoZero = true;
@@ -841,6 +862,7 @@ bool Polynomial::isConstant()
 	return allExpoZero;
 }
 
+// checks if constant term
 bool Polynomial::isConstantTerm(int t)
 {
 	bool allExpoZero = true;
@@ -852,6 +874,7 @@ bool Polynomial::isConstantTerm(int t)
 	return allExpoZero;
 }
 
+// checks if linear
 bool Polynomial::isLinear() // TEST
 {
 	int numExponents = 0;
@@ -869,6 +892,7 @@ bool Polynomial::isLinear() // TEST
 	return true;
 }
 
+// orders using lex order
 void Polynomial::lexOrder()
 {
 	// LME nonzero entry of alpha-beta = (a_1 - b_1, ... , a_n - b_n) is positive
@@ -894,6 +918,7 @@ void Polynomial::lexOrder()
 	}
 }
 
+// print polynomial
 void Polynomial::printPolynomial()
 {
 	bool nonConstant = false, oneMoreNonZero = false;
@@ -968,7 +993,9 @@ void Polynomial::printPolynomial()
 	cout << endl;
 }
 
-void Polynomial::printPolynomial(int player, int strat) // For EU's
+// print polynomial
+// For EU's
+void Polynomial::printPolynomial(int player, int strat)
 {
 	bool nonConstant = false, oneMoreNonZero = false;
 	int count = 0;
@@ -1040,6 +1067,7 @@ void Polynomial::printPolynomial(int player, int strat) // For EU's
 	cout << endl;
 }
 
+// remove term
 void Polynomial::removeTerm(int &t)
 {	
 	int count = 0;
@@ -1068,6 +1096,7 @@ void Polynomial::removeTerm(int &t)
 	t--;
 }
 
+// set EU coeffs
 void Polynomial::setEUCoefficients(vector<int> coeffs, int numPlayers) // TEST
 {
 	// enters coeffs into the expected utility, leaving the last term as a_{n-1}
@@ -1111,6 +1140,7 @@ void Polynomial::setEUCoefficients(vector<int> coeffs, int numPlayers) // TEST
 		// cout << "ERROR: numPLayers > 2\n";
 }
 
+// set EU exponents
 void Polynomial::setEUExponents(vector<vector<int> > exponents) // FINISH: need number of terms per polynomial
 {
 	// enters exponents into the expected utility
@@ -1119,12 +1149,14 @@ void Polynomial::setEUExponents(vector<vector<int> > exponents) // FINISH: need 
 		// this->setTerm(t, exponents.at(t));
 }
 
+// set term
 void Polynomial::setTerm(int t, Term* temp)
 {
 	this->setCoefficient(t, temp->coefficient);
 	this->setExponents(t, temp->exponents);
 }
 
+// simplify
 void Polynomial::simplify()
 {
 	cout << "SIMPLIFY\n";
