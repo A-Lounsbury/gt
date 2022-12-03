@@ -4413,7 +4413,7 @@ void simGame<T>::readFromFile()
 	LinkedList<T>* curList;
 	string filename;
 	
-	cout << "Enter the name of the file (Example: file.txt):  ";
+	cout << "Enter the name of the file:  ";
 	cin >> filename;
 	
 	infile.open(filename.c_str());
