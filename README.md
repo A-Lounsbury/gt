@@ -3,7 +3,7 @@
 
 ![gt menu](image.png)
 
-To compile the code download and install [TDM-GCC](https://jmeubank.github.io/tdm-gcc/) and enter 
+To compile the code, download and install [TDM-GCC](https://jmeubank.github.io/tdm-gcc/) and enter 
 ```
 > g++ -std=c++11 game.cpp
 ```
