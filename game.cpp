@@ -96,10 +96,9 @@ int main()
 			cout << setw(12) << oList + secondColumn << ". Add player\n";
 			oList++;
 			cout << " " << oList << ". Mixed Equilibria\n";
-			oList++;
 			
 			cout << "- - - - - - - - - - - - - - - - - -\n";
-			cout << "Enter an integer from 1 to " << oList + secondColumn << ":  ";
+			cout << "Enter an integer from 1 to " << oList + secondColumn -1 << ":  ";
 			cin >> menu;
 			validate(menu, 1, oList + secondColumn);			
 			
