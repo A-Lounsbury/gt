@@ -10,7 +10,7 @@ Purpose: class for simultaneous aspects of games
 #include "Player.h"
 #include "LinkedList.h"
 
-// a vector of matrices (vectors of vectors) of linked lists and relevant data
+// "Simultaneous Game" a vector of matrices (vectors of vectors) of linked lists and relevant data
 template <typename T>
 class simGame
 {
@@ -1230,11 +1230,16 @@ void simGame<T>::computeChoices() // FINISH: knowledge; ktest3.txt outcome on kt
 	{
 		if (mixed)
 		{
+			// randomly choose one equilibrium or another
 			srand(time(NULL));
-			int eq = rand() % pureEquilibria.size();
-			profile = getPureEquilibrium(eq);
+			// int eq = rand() % pureEquilibria.size();
+			// profile = getPureEquilibrium(eq);
+			// for (int x = 0; x < numPlayers; x++)
+			// 	players.at(x)->setChoice(profile.at(x));
+
+			// randomly choose each strategy
 			for (int x = 0; x < numPlayers; x++)
-				players.at(x)->setChoice(profile.at(x));
+				players.at(x)->setChoice(rand() % players.at(x)->getNumStrats());
 		}
 		else if (!mixed)
 		{
@@ -1249,7 +1254,7 @@ void simGame<T>::computeChoices() // FINISH: knowledge; ktest3.txt outcome on kt
 			alreadyVisited.push_back(previousChoices);
 			while (!isPureEquilibrium(choices) && !visitedTwice)
 			{			
-				// change each player's choice to max in row/col/section if not already max
+				// change each player's choice to the max in the row/col/section if not already max
 				for (int x = 0; x < numPlayers; x++)
 					choices.at(x) = maxStratInRowColOrMatrices(x, previousChoices);
 				

@@ -74,7 +74,7 @@ class Knowledge
 		bool getpayoffKnowledge(int x, int y) 					{ return payoffKnowledge.at(x).at(y); }
 		bool getnumPlayersKnowledge(int x, int y) 				{ return numPlayersKnowledge.at(x).at(y); }
 		bool getnumStratsKnowledge(int x, int y) 				{ return numStratsKnowledge.at(x).at(y); }
-		bool getrationalityKnowledge(int x, int y) 			{ return rationalityKnowledge.at(x).at(y); }
+		bool getrationalityKnowledge(int x, int y) 				{ return rationalityKnowledge.at(x).at(y); }
 		bool getpreferenceKnowledge(int x, int y) 				{ return preferenceKnowledge.at(x).at(y); }
 		void setchoiceKnowledge(int x, int y, bool val) 		{ choiceKnowledge.at(x).at(y) = val; }
 		void setpayoffKnowledge(int x, int y, bool val) 		{ payoffKnowledge.at(x).at(y) = val; }
