@@ -1230,16 +1230,13 @@ void simGame<T>::computeChoices() // FINISH: knowledge; ktest3.txt outcome on kt
 	{
 		if (mixed)
 		{
-			// randomly choose one equilibrium or another
-			srand(time(NULL));
-			// int eq = rand() % pureEquilibria.size();
-			// profile = getPureEquilibrium(eq);
-			// for (int x = 0; x < numPlayers; x++)
-			// 	players.at(x)->setChoice(profile.at(x));
-
 			// randomly choose each strategy
+			srand(time(NULL));
 			for (int x = 0; x < numPlayers; x++)
 				players.at(x)->setChoice(rand() % players.at(x)->getNumStrats());
+			// compute expected utilities
+			// choose strategies according to those probabilities
+			
 		}
 		else if (!mixed)
 		{

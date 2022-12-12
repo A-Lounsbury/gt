@@ -1,5 +1,5 @@
 /**************************
-Title: Polynomial.h
+Title: UnivariatePolynomial.h
 Author: Andrew Lounsbury
 Date: 6/2/2020
 Purpose: for holding EU's
@@ -12,90 +12,85 @@ Purpose: for holding EU's
 4) add like terms
 ***************************************/
 
-#ifndef POLYNOMIAL_H
-#define POLYNOMIAL_H
+#ifndef UnivariatePolynomial_H
+#define UnivariatePolynomial_H
 #include "inputValidation.cpp"
-#include "term.h"
+#include "UnivariateTerm.h"
 
 #include <iostream>
 #include <cmath>
 #include <vector>
 using namespace std;
 
-// polynomials of the form [coefficient, exponents] -> ... -> [coefficient, exponents]
-class Polynomial
+// UnivariatePolynomials of the form [coefficient, exponents] -> ... -> [coefficient, exponents]
+class UnivariatePolynomial
 {
 	private:
-		Term* leading;
-		Term* trailing;
+		UnivariateTerm* leading;
+		UnivariateTerm* trailing;
 		int numTerms;
 		int numVariables;
 		int totalDegree;
-		vector<vector<Polynomial*> > derivatives;
+		vector<vector<UnivariatePolynomial*> > derivatives;
 		bool linear;
 	public:		
-		double getCoefficient(int i) const 				{ return getTerm(i)->coefficient; }
-		vector<vector<Polynomial*> > getDerivatives() 	{ return derivatives; }
-		int getExponent(int t, int var) const 			{ return getExponents(t).at(var); }
-		vector<int> getExponents(int i) const 			{ return this->getTerm(i)->exponents; }
-		int getNumTerms() const 						{ return numTerms; }
-		int getNumVariables() const 					{ return numVariables; }
-		int getSizeDerivatives() 						{ return derivatives.size(); }
+		double getCoefficient(int i) const 				            { return getUnivariateTerm(i)->coefficient; }
+		vector<vector<UnivariatePolynomial*> > getDerivatives() 	{ return derivatives; }
+		int getExponent(int t, int var) const 			            { return getExponents(t).at(var); }
+		vector<int> getExponents(int i) const 			            { return this->getUnivariateTerm(i)->exponent; }
+		int getNumUnivariateTerms() const 				       		{ return numTerms; }
+		int getNumVariables() const 				            	{ return numVariables; }
+		int getSizeDerivatives() 					            	{ return derivatives.size(); }
 		// with respect to v
-		int getSizeDerivativesWRT(int v) 				{ return derivatives.at(v).size(); }
-		int getTotalDegree() const 						{ return totalDegree; }
-		Term* getTrailing() const 						{ return trailing; }
-		void setCoefficient(int t, double num) 			{ getTerm(t)->coefficient = num; }
-		void setExponent(int t, int v, int num) 		{ getTerm(t)->exponents.at(v) = num; }
-		void setExponents(int t, vector<int> expo) 		{ getTerm(t)->exponents = expo; }
-		void setNext(int t, Term* term) 				{ getTerm(t)->next = term;}
-		void setNumTerms(int num) 						{ numTerms = num; }
-		void setTotalDegree(int num) 					{ totalDegree = num; }
+		int getSizeDerivativesWRT(int v) 			               	{ return derivatives.at(v).size(); }
+		UnivariateTerm* getTrailing() const 						{ return trailing; }
+		void setNumUnivariateTerms(int num) 						{ numTerms = num; }
+		void setTotalDegree(int num) 					        	{ totalDegree = num; }
 		
-		Polynomial();
-		Polynomial(int, int, int);
-		Polynomial(int, int, vector<int>, int);
-		~Polynomial();
+		UnivariatePolynomial();
+		UnivariatePolynomial(int, int, int);
+		UnivariatePolynomial(int, int, vector<int>, int);
+		~UnivariatePolynomial();
 		
-		// Polynomial operator+(const Polynomial &p);
-		// Polynomial operator+(Polynomial &l, Polynomial &r);
-		Polynomial operator*(const Polynomial &p);
-		Polynomial* operator-(const Polynomial &p);
-		bool operator==(const Polynomial &p);
-		bool operator!=(const Polynomial &p);
-		bool operator<(const Polynomial &p);
-		bool operator>(const Polynomial &p);
+		// UnivariatePolynomial operator+(const UnivariatePolynomial &p);
+		// UnivariatePolynomial operator+(UnivariatePolynomial &l, UnivariatePolynomial &r);
+		UnivariatePolynomial operator*(const UnivariatePolynomial &p);
+		UnivariatePolynomial* operator-(const UnivariatePolynomial &p);
+		bool operator==(const UnivariatePolynomial &p);
+		bool operator!=(const UnivariatePolynomial &p);
+		bool operator<(const UnivariatePolynomial &p);
+		bool operator>(const UnivariatePolynomial &p);
 		
-		void addTerm(int, vector<int>);
-		void addTerm(Term*);
+		void addUnivariateTerm(int, vector<int>);
+		void addUnivariateTerm(UnivariateTerm*);
 		void computeTotalDegree();
-		Polynomial* derivative(int);
+		UnivariatePolynomial* derivative(int);
 		void enterInfo();
 		double eval(double);
-		Polynomial* getDerivative(int, int);
+		UnivariatePolynomial* getDerivative(int, int);
 		int getNonZeroExpo(int) const;
-		Term* getTerm(int) const;
-		void insertTerm(int, vector<int>, int);
-		void insertTerm(int, Term*);
-		Polynomial* integrate(int);
+		UnivariateTerm* getUnivariateTerm(int) const;
+		void insertUnivariateTerm(int, vector<int>, int);
+		void insertUnivariateTerm(int, UnivariateTerm*);
+		UnivariatePolynomial* integrate(int);
 		double integrateOverInterval(double, double, int);
 		bool isConstant();
-		bool isConstantTerm(int);
+		bool isConstantUnivariateTerm(int);
 		bool isLinear();
 		void lexOrder();
-		void printPolynomial();
-		void printPolynomial(int, int);
-		void removeTerm(int &);
+		void printUnivariatePolynomial();
+		void printUnivariatePolynomial(int, int);
+		void removeUnivariateTerm(int &);
 		void setEUCoefficients(vector<int>, int);
 		void setEUExponents(vector<vector<int> >);
-		void setTerm(int, Term*);
+		void setUnivariateTerm(int, UnivariateTerm*);
 		void simplify();
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // constructor
-Polynomial::Polynomial() // FINISH
+UnivariatePolynomial::UnivariatePolynomial() // FINISH
 {
 	leading = NULL;
 	trailing = NULL;
@@ -107,9 +102,9 @@ Polynomial::Polynomial() // FINISH
 	linear = true;
 }
 
-// these polynomials are in R[var]
+// these UnivariatePolynomials are in R[var]
 // a_{nT}x^{nT} + a_{nT-1}x^{nT-1} + ... + a_1x^{nT-(nT-1)} + a_0
-Polynomial::Polynomial(int nT, int nV, int var) // FINISH
+UnivariatePolynomial::UnivariatePolynomial(int nT, int nV, int var) // FINISH
 {
 	numVariables = nV;
 	
@@ -117,18 +112,18 @@ Polynomial::Polynomial(int nT, int nV, int var) // FINISH
 	{		
 		numTerms = 1;
 		
-		leading = new Term;
+		leading = new UnivariateTerm;
 		leading->coefficient = 1;
 		
-		leading->exponents = vector<int>(numVariables); // numVariables is numPlayers
+		leading->exponent = vector<int>(numVariables); // numVariables is numPlayers
 		for (int i = 0; i < numVariables; i++)
 		{
 			if (i == var)
-				leading->exponents.at(i) = 1;
+				leading->exponent.at(i) = 1;
 		}
 		leading->next = NULL;
 		
-		trailing = new Term;
+		trailing = new UnivariateTerm;
 		trailing = leading;
 		
 		totalDegree = 1;
@@ -137,15 +132,15 @@ Polynomial::Polynomial(int nT, int nV, int var) // FINISH
 	{
 		numTerms = nT;
 		
-		leading = new Term;
+		leading = new UnivariateTerm;
 		leading->coefficient = 0;
-		leading->exponents.resize(numVariables);
+		leading->exponent.resize(numVariables);
 		for (int v = 0; v < numVariables; v++)
 		{
 			if (v == var)
-				leading->exponents.at(v) = numTerms - 1;
+				leading->exponent.at(v) = numTerms - 1;
 			else
-				leading->exponents.at(v) = 0;
+				leading->exponent.at(v) = 0;
 		}
 		leading->next = NULL;
 		
@@ -153,52 +148,52 @@ Polynomial::Polynomial(int nT, int nV, int var) // FINISH
 			trailing = leading;
 		else if (numTerms == 2)
 		{			
-			trailing = new Term;
+			trailing = new UnivariateTerm;
 			trailing->coefficient = 0;
-			trailing->exponents.resize(numVariables);
+			trailing->exponent.resize(numVariables);
 			for (int v = 0; v < numVariables; v++)
-				trailing->exponents.at(v) = 0;
+				trailing->exponent.at(v) = 0;
 			trailing->next = NULL;
 			leading->next = trailing;		
 		}
 		else // numTerms >= 3
 		{
-			Term* temp = new Term;
-			Term* term2 = new Term;
+			UnivariateTerm* temp = new UnivariateTerm;
+			UnivariateTerm* term2 = new UnivariateTerm;
 			term2->coefficient = 0;
-			term2->exponents.resize(numVariables);
+			term2->exponent.resize(numVariables);
 			for (int v = 0; v < numVariables; v++)
 			{
 				if (v == var)
-					term2->exponents.at(v) = numTerms - 2;
+					term2->exponent.at(v) = numTerms - 2;
 				else
-					term2->exponents.at(v) = 0;
+					term2->exponent.at(v) = 0;
 			}
 			leading->next = term2;
 			
 			temp = term2;
 			for (int t = 2; t < numTerms - 1; t++) // terms 2,..., numTerms - 1
 			{
-				Term* newTerm = new Term;
-				newTerm->coefficient = 0;
-				newTerm->exponents.resize(numVariables);
+				UnivariateTerm* newUnivariateTerm = new UnivariateTerm;
+				newUnivariateTerm->coefficient = 0;
+				newUnivariateTerm->exponent.resize(numVariables);
 				for (int v = 0; v < numVariables; v++)
 				{
 					if (v == var)
-						newTerm->exponents.at(v) = numTerms - (t + 1);
+						newUnivariateTerm->exponent.at(v) = numTerms - (t + 1);
 					else
-						newTerm->exponents.at(v) = 0;
+						newUnivariateTerm->exponent.at(v) = 0;
 				}
-				temp->next = newTerm; // term t - 1 next points to term t
-				temp = newTerm; // temp moves up one term
+				temp->next = newUnivariateTerm; // term t - 1 next points to term t
+				temp = newUnivariateTerm; // temp moves up one term
 			}
 			
-			trailing = new Term;
+			trailing = new UnivariateTerm;
 			temp->next = trailing;
 			trailing->coefficient = 0;
-			trailing->exponents.resize(numVariables);
+			trailing->exponent.resize(numVariables);
 			for (int v = 0; v < numVariables; v++)
-				trailing->exponents.at(v) = 0;
+				trailing->exponent.at(v) = 0;
 			trailing->next = NULL;
 		}
 		totalDegree = -1;
@@ -207,23 +202,23 @@ Polynomial::Polynomial(int nT, int nV, int var) // FINISH
 }
 
 // destructor
-Polynomial::~Polynomial()
+UnivariatePolynomial::~UnivariatePolynomial()
 {
-	Term* curTerm;
+	UnivariateTerm* curUnivariateTerm;
 	
-	curTerm = leading;
-	while (curTerm)
+	curUnivariateTerm = leading;
+	while (curUnivariateTerm)
 	{
-		delete curTerm;
-		curTerm = curTerm->next;
+		delete curUnivariateTerm;
+		curUnivariateTerm = curUnivariateTerm->next;
 	}
 	delete this;
 }
 
-/*Polynomial Polynomial::operator+(const Polynomial &p)
+/*UnivariatePolynomial UnivariatePolynomial::operator+(const UnivariatePolynomial &p)
 {		
-	Polynomial poly;
-	// int pTermIndex = -1, thisTermIndex = -1;
+	UnivariatePolynomial poly;
+	// int pUnivariateTermIndex = -1, thisUnivariateTermIndex = -1;
 	// bool inP = false, inThis = false;
 	
 	// constructor creates a single NULL node; if so, do nothing
@@ -232,25 +227,25 @@ Polynomial::~Polynomial()
 	else if (&p == NULL || (this == NULL && &p == NULL))
 		return *this;
 	
-	/*if (this->getNumTerms() >= p.getNumTerms())
+	/*if (this->getNumUnivariateTerms() >= p.getNumUnivariateTerms())
 	{		
 		// start with highest degree/first term in this
-		for (int t1 = 0; t1 < this->getNumTerms(); t1++)
+		for (int t1 = 0; t1 < this->getNumUnivariateTerms(); t1++)
 		{					
 			inP = false;
 			// check if p has a term of the same degree
-			for (int t2 = 0; t2 < p.getNumTerms(); t2++)
+			for (int t2 = 0; t2 < p.getNumUnivariateTerms(); t2++)
 			{						
 				if (this->getExponents(t1) == p.getExponents(t2))
 				{							
 					inP = true;
-					pTermIndex = t2;
+					pUnivariateTermIndex = t2;
 				}
 			}
 			
 			if (inP) // add coefficients
 			{
-				poly.setCoefficient(t1, this->getCoefficient(t1) + p.getCoefficient(pTermIndex));
+				poly.setCoefficient(t1, this->getCoefficient(t1) + p.getCoefficient(pUnivariateTermIndex));
 				poly.setExponents(t1, this->getExponents(t1));
 			}
 			else
@@ -263,22 +258,22 @@ Polynomial::~Polynomial()
 	else
 	{		
 		// start with highest degree/first term in p
-		for (int t1 = 0; t1 < p.getNumTerms(); t1++)
+		for (int t1 = 0; t1 < p.getNumUnivariateTerms(); t1++)
 		{
 			inThis = false;
 			// check if this has a term of the same degree
-			for (int t2 = 0; t2 < this->getNumTerms(); t2++)
+			for (int t2 = 0; t2 < this->getNumUnivariateTerms(); t2++)
 			{
 				if (this->getExponents(t2) == p.getExponents(t1))
 				{
 					inThis = true;
-					thisTermIndex = t2;
+					thisUnivariateTermIndex = t2;
 				}
 			}
 			
 			if (inThis) // add coefficients
 			{
-				poly.setCoefficient(t1, this->getCoefficient(thisTermIndex) + p.getCoefficient(t1));
+				poly.setCoefficient(t1, this->getCoefficient(thisUnivariateTermIndex) + p.getCoefficient(t1));
 				poly.setExponents(t1, p.getExponents(t1));
 			}
 			else
@@ -289,30 +284,30 @@ Polynomial::~Polynomial()
 		}				
 	}*/
 	
-	/*cout << "\nNT: " << this->getNumTerms() << endl;
-	cout << "NT: " << p.getNumTerms() << endl;
+	/*cout << "\nNT: " << this->getNumUnivariateTerms() << endl;
+	cout << "NT: " << p.getNumUnivariateTerms() << endl;
 	
-	for (int t = 0; t < this->getNumTerms(); t++)
-		poly.addTerm(this->getTerm(t));
-	for (int t = 0; t < p.getNumTerms(); t++)
-		poly.addTerm(p.getTerm(t));
+	for (int t = 0; t < this->getNumUnivariateTerms(); t++)
+		poly.addUnivariateTerm(this->getUnivariateTerm(t));
+	for (int t = 0; t < p.getNumUnivariateTerms(); t++)
+		poly.addUnivariateTerm(p.getUnivariateTerm(t));
 	
 	poly.simplify();
 	return poly;
 }*/
 
-// polynomial multiplication
-Polynomial Polynomial::operator*(const Polynomial &p)
+// UnivariatePolynomial multiplication
+UnivariatePolynomial UnivariatePolynomial::operator*(const UnivariatePolynomial &p)
 {
 	int nV = this->getNumVariables();
 	if (nV < p.getNumVariables())
 		nV = p.getNumVariables();
 				
-	Polynomial* poly = new Polynomial(this->getNumTerms() * p.getNumVariables(), nV, -1);
+	UnivariatePolynomial* poly = new UnivariatePolynomial(this->getNumUnivariateTerms() * p.getNumVariables(), nV, -1);
 	
-	for (int t1 = 0; t1 < this->getNumTerms(); t1++)
+	for (int t1 = 0; t1 < this->getNumUnivariateTerms(); t1++)
 	{
-		for (int t2 = 0; t2 < p.getNumTerms(); t2++)
+		for (int t2 = 0; t2 < p.getNumUnivariateTerms(); t2++)
 		{
 			poly->setCoefficient(t1 + t2, this->getCoefficient(t1) + p.getCoefficient(t2));
 			for (int v = 0; v < poly->getNumVariables(); v++)
@@ -322,36 +317,36 @@ Polynomial Polynomial::operator*(const Polynomial &p)
 	return *poly;
 }
 
-// polynomial subtraction
-Polynomial* Polynomial::operator-(const Polynomial &p)
+// UnivariatePolynomial subtraction
+UnivariatePolynomial* UnivariatePolynomial::operator-(const UnivariatePolynomial &p)
 {
 	// cout << "SUBTRACTION\n";
 	
-	Polynomial* poly;
-	int pTermIndex = -1, thisTermIndex = -1;
+	UnivariatePolynomial* poly;
+	int pUnivariateTermIndex = -1, thisUnivariateTermIndex = -1;
 	bool inP = false, inThis = false;
 	
-	if (this->getNumTerms() >= p.getNumTerms())
+	if (this->getNumUnivariateTerms() >= p.getNumUnivariateTerms())
 	{
-		poly = new Polynomial(this->getNumTerms(), this->getNumVariables(), -1); // -1 bc the var parameter isn't needed and is irrelevant
+		poly = new UnivariatePolynomial(this->getNumUnivariateTerms(), this->getNumVariables(), -1); // -1 bc the var parameter isn't needed and is irrelevant
 		
 		// start with highest degree/first term in this
-		for (int i = 0; i < this->getNumTerms(); i++)
+		for (int i = 0; i < this->getNumUnivariateTerms(); i++)
 		{
 			inP = false;
 			// check if p has a term of the same degree
-			for (int j = 0; j < p.getNumTerms(); j++)
+			for (int j = 0; j < p.getNumUnivariateTerms(); j++)
 			{
 				if (p.getExponents(j) == this->getExponents(i))
 				{
 					inP = true;
-					pTermIndex = j;
+					pUnivariateTermIndex = j;
 				}
 			}
 			
 			if (inP) // subtract coefficients
 			{
-				poly->setCoefficient(i, this->getCoefficient(i) - p.getCoefficient(pTermIndex));
+				poly->setCoefficient(i, this->getCoefficient(i) - p.getCoefficient(pUnivariateTermIndex));
 				poly->setExponents(i, this->getExponents(i));
 			}
 			else
@@ -363,25 +358,25 @@ Polynomial* Polynomial::operator-(const Polynomial &p)
 	}
 	else
 	{
-		poly = new Polynomial(p.getNumTerms(), p.getNumVariables(), -1); // -1 bc the var parameter isn't needed and is irrelevant
+		poly = new UnivariatePolynomial(p.getNumUnivariateTerms(), p.getNumVariables(), -1); // -1 bc the var parameter isn't needed and is irrelevant
 		
 		// start with highest degree/first term in p
-		for (int i = 0; i < p.getNumTerms(); i++)
+		for (int i = 0; i < p.getNumUnivariateTerms(); i++)
 		{
 			inThis = false;
 			// check if this has a term of the same degree
-			for (int j = 0; j < this->getNumTerms(); j++)
+			for (int j = 0; j < this->getNumUnivariateTerms(); j++)
 			{
 				if (this->getExponents(j) == p.getExponents(i))
 				{
 					inThis = true;
-					thisTermIndex = j;
+					thisUnivariateTermIndex = j;
 				}
 			}
 			
 			if (inThis) // subtract coefficients
 			{
-				poly->setCoefficient(i, this->getCoefficient(thisTermIndex) - p.getCoefficient(i));
+				poly->setCoefficient(i, this->getCoefficient(thisUnivariateTermIndex) - p.getCoefficient(i));
 				poly->setExponents(i, p.getExponents(i));
 			}
 			else
@@ -395,13 +390,13 @@ Polynomial* Polynomial::operator-(const Polynomial &p)
 	return poly;
 }
 
-// polynomial equality
-bool Polynomial::operator==(const Polynomial &p)
+// UnivariatePolynomial equality
+bool UnivariatePolynomial::operator==(const UnivariatePolynomial &p)
 {
-	if (this->getTotalDegree() != p.getTotalDegree() || this->getNumTerms() != p.getNumTerms())
+	if (this->getDegree() != p.getDegree() || this->getNumUnivariateTerms() != p.getNumUnivariateTerms())
 		return false;
 	
-	for (int i = 0; i < p.getNumTerms(); i++)
+	for (int i = 0; i < p.getNumUnivariateTerms(); i++)
 	{
 		if (this->getCoefficient(i) != p.getCoefficient(i))// || this->getExponents(i) != p.getExponents(i))
 			return false;
@@ -412,8 +407,8 @@ bool Polynomial::operator==(const Polynomial &p)
 	return true;
 }
 
-// polynomial inequality
-bool Polynomial::operator!=(const Polynomial &p)
+// UnivariatePolynomial inequality
+bool UnivariatePolynomial::operator!=(const UnivariatePolynomial &p)
 {
 	if (*this == p)
 		return false;
@@ -421,8 +416,8 @@ bool Polynomial::operator!=(const Polynomial &p)
 		return true;
 }
 
-// polynomial order, less than
-bool Polynomial::operator<(const Polynomial &p) // FINISH
+// UnivariatePolynomial order, less than
+bool UnivariatePolynomial::operator<(const UnivariatePolynomial &p) // FINISH
 {
 	// x^alpha = a_0x^alpha_0 + a_1x^alpha_1 + ... + a_{nT-2}x^alpha_{nT-2} + a_{nT-1}x^alpha_{nT-1}
 	// x^beta = b_0x^beta_0 + b_1x^beta_1 + ... + b_{nT-2}x^beta_{nT-2} + b_{nT-1}x^beta_{nT-1}
@@ -452,8 +447,8 @@ bool Polynomial::operator<(const Polynomial &p) // FINISH
 	return true;
 }
 
-// polynomial order, greater than
-bool Polynomial::operator>(const Polynomial &p)
+// UnivariatePolynomial order, greater than
+bool UnivariatePolynomial::operator>(const UnivariatePolynomial &p)
 {
 	if (*this == p || *this < p)
 		return false;
@@ -462,7 +457,7 @@ bool Polynomial::operator>(const Polynomial &p)
 }
 
 // add a term
-void Polynomial::addTerm(int coeff, vector<int> expo) // TEST
+void UnivariatePolynomial::addUnivariateTerm(int coeff, vector<int> expo) // TEST
 {
 	cout << "ADDTERM other\n";
 	
@@ -476,29 +471,29 @@ void Polynomial::addTerm(int coeff, vector<int> expo) // TEST
 	if (linear && numExponents > 1)
 		linear = false;
 	
-	Term* newTerm = new Term;
-	newTerm->coefficient = coeff;
-	newTerm->exponents = expo;
+	UnivariateTerm* newUnivariateTerm = new UnivariateTerm;
+	newUnivariateTerm->coefficient = coeff;
+	newUnivariateTerm->exponent = expo;
 	
 	if (!leading)
 	{
 		cout << "leading == NULL\n";
-		leading = newTerm;
-		trailing = newTerm;
+		leading = newUnivariateTerm;
+		trailing = newUnivariateTerm;
 	}
 	else
 	{
 		cout << "ELSE\n";
-		trailing->next = newTerm;
+		trailing->next = newUnivariateTerm;
 		cout << "test1\n";
-		trailing = newTerm;
+		trailing = newUnivariateTerm;
 		cout << "test2\n";
 	}
 	numTerms++;
 }
 
 // add a term
-void Polynomial::addTerm(Term* term) // TEST
+void UnivariatePolynomial::addUnivariateTerm(UnivariateTerm* term) // TEST
 {
 	cout << "ADDTERM\n";
 	
@@ -506,9 +501,9 @@ void Polynomial::addTerm(Term* term) // TEST
 	if (linear)
 	{
 		int n = 0, numExponents = 0;
-		while ((unsigned)n < term->exponents.size() && numExponents < 2)
+		while ((unsigned)n < term->exponent.size() && numExponents < 2)
 		{
-			if (term->exponents.at(n) != 0)
+			if (term->exponent.at(n) != 0)
 				numExponents++;
 			n++;
 		}
@@ -529,41 +524,25 @@ void Polynomial::addTerm(Term* term) // TEST
 	numTerms++;
 	
 	cout << "END ADDTERM: ";
-	this->printPolynomial();
+	this->printUnivariatePolynomial();
 	cout << endl;
 }
 
-// get total degree
-void Polynomial::computeTotalDegree()
-{
-	int sum = 0, max = 0;
-	for (int t = 0; t < numTerms; t++)
-	{
-		sum = 0;
-		for (int v = 0; v < numVariables; v++)
-			sum += getTerm(t)->exponents.at(v);
-		
-		if (sum > max)
-			max = sum;
-	}
-	setTotalDegree(max);
-}
-
 // get derivative
-// FINISH: linear derivatives from nonlinear polynomials
-Polynomial* Polynomial::derivative(int var)
+// FINISH: linear derivatives from nonlinear UnivariatePolynomials
+UnivariatePolynomial* UnivariatePolynomial::derivative(int var)
 {
 	// computes the derivative of this wrt to the var-th variable
 	
-	Polynomial* poly = new Polynomial(this->getNumTerms(), this->getNumVariables(), 0);
-	for (int t = 0; t < poly->getNumTerms(); t++)
+	UnivariatePolynomial* poly = new UnivariatePolynomial(this->getNumUnivariateTerms(), this->getNumVariables(), 0);
+	for (int t = 0; t < poly->getNumUnivariateTerms(); t++)
 	{
 		poly->setCoefficient(t, this->getCoefficient(t));
 		for (int v = 0; v < poly->getNumVariables(); v++)
 			poly->setExponent(t, v, this->getExponent(t, v));
 	}
 	
-	for (int t = 0; t < poly->getNumTerms(); t++)
+	for (int t = 0; t < poly->getNumUnivariateTerms(); t++)
 	{
 		if (poly->getExponent(t, var) != 0) // var-th variable occurs
 		{			
@@ -580,19 +559,19 @@ Polynomial* Polynomial::derivative(int var)
 		else // var-th variable does not occur
 		{
 			if (numTerms > 1)
-				poly->removeTerm(t);
+				poly->removeUnivariateTerm(t);
 			else
-				poly->setCoefficient(t, 0); // is now the zero polynomial
+				poly->setCoefficient(t, 0); // is now the zero UnivariatePolynomial
 		}
 	}
-	// poly->printPolynomial();
+	// poly->printUnivariatePolynomial();
 	return poly;
 }
 
 // enter info
 /* separate bc mixed strategies doesn't 
 require the user to enter info */
-void Polynomial::enterInfo()
+void UnivariatePolynomial::enterInfo()
 {
 	double c = 0.0;
 	int e = -1;
@@ -674,8 +653,8 @@ void Polynomial::enterInfo()
 	computeTotalDegree();
 }
 
-// evaluate polynomial function at val
-double Polynomial::eval(double val)
+// evaluate UnivariatePolynomial function at val
+double UnivariatePolynomial::eval(double val)
 {
 	double num = 1.0, sum = 0.0;
 	
@@ -696,7 +675,7 @@ double Polynomial::eval(double val)
 }
 
 // computes derivatives up to the (n + 1)-th derivative wrt the v-th variable
-Polynomial* Polynomial::getDerivative(int n, int v)
+UnivariatePolynomial* UnivariatePolynomial::getDerivative(int n, int v)
 {
 	bool loop = false;
 	
@@ -734,8 +713,8 @@ Polynomial* Polynomial::getDerivative(int n, int v)
 }
 
 // get nonzero exponent
-// for linear polynomials
-int Polynomial::getNonZeroExpo(int t) const
+// for linear UnivariatePolynomials
+int UnivariatePolynomial::getNonZeroExpo(int t) const
 { 
 	for (int v = 0; v < numVariables; v++)
 	{
@@ -746,45 +725,45 @@ int Polynomial::getNonZeroExpo(int t) const
 }
 
 // get term
-Term* Polynomial::getTerm(int t) const
+UnivariateTerm* UnivariatePolynomial::getUnivariateTerm(int t) const
 {
 	int count = 0;
-	Term* curTerm;
-	curTerm = leading;
+	UnivariateTerm* curUnivariateTerm;
+	curUnivariateTerm = leading;
 	
 	while (count < t)
 	{
-		curTerm = curTerm->next;
+		curUnivariateTerm = curUnivariateTerm->next;
 		count++;
 	}
-	return curTerm;
+	return curUnivariateTerm;
 }
 
 // insert term
-void Polynomial::insertTerm(int t, vector<int> expo, int coeff)
+void UnivariatePolynomial::insertUnivariateTerm(int t, vector<int> expo, int coeff)
 {
-	Term* newTerm = new Term;
+	UnivariateTerm* newUnivariateTerm = new UnivariateTerm;
 	
-	// putting info into newTerm
-	newTerm->coefficient = coeff;
+	// putting info into newUnivariateTerm
+	newUnivariateTerm->coefficient = coeff;
 	for (int n = 0; (unsigned)n < expo.size(); n++)
-		newTerm->exponents.push_back(expo.at(n));
+		newUnivariateTerm->exponent.push_back(expo.at(n));
 	
 	if (t == 0)
 	{
-		newTerm->next = leading->next;
-		leading = newTerm;
+		newUnivariateTerm->next = leading->next;
+		leading = newUnivariateTerm;
 	}
 	else
 	{
-		newTerm->next = getTerm(t - 1)->next; // t - 1 --> new --> t
-		getTerm(t - 1)->next = newTerm; // insert at position i
+		newUnivariateTerm->next = getUnivariateTerm(t - 1)->next; // t - 1 --> new --> t
+		getUnivariateTerm(t - 1)->next = newUnivariateTerm; // insert at position i
 	}
 	numTerms++;
 }
 
 // insert term
-void Polynomial::insertTerm(int t, Term* term)
+void UnivariatePolynomial::insertUnivariateTerm(int t, UnivariateTerm* term)
 {	
 	if (t == 0)
 	{
@@ -793,16 +772,16 @@ void Polynomial::insertTerm(int t, Term* term)
 	}
 	else
 	{
-		term->next = getTerm(t - 1)->next; // i - 1 --> new --> i
-		getTerm(t - 1)->next = term; // insert at position i
+		term->next = getUnivariateTerm(t - 1)->next; // i - 1 --> new --> i
+		getUnivariateTerm(t - 1)->next = term; // insert at position i
 	}
 	numTerms++;
 }
 
 // integrate
-Polynomial* Polynomial::integrate(int var) // FINISH (... + c)
+UnivariatePolynomial* UnivariatePolynomial::integrate(int var) // FINISH (... + c)
 {
-	Polynomial* poly = new Polynomial(getNumTerms(), getNumVariables(), 0);
+	UnivariatePolynomial* poly = new UnivariatePolynomial(getNumUnivariateTerms(), getNumVariables(), 0);
 	
 	// copying this pointer
 	for (int t = 0; t < numTerms; t++)
@@ -823,14 +802,14 @@ Polynomial* Polynomial::integrate(int var) // FINISH (... + c)
 }
 
 // integrate over [a, b]
-double Polynomial::integrateOverInterval(double a, double b, int var)
+double UnivariatePolynomial::integrateOverInterval(double a, double b, int var)
 {
 	// cout << "INTEGRATEOVER\n";
 	
 	double num = -1;
-	Polynomial* poly = new Polynomial(getNumTerms(), getNumVariables(), 0);
+	UnivariatePolynomial* poly = new UnivariatePolynomial(getNumUnivariateTerms(), getNumVariables(), 0);
 	
-	for (int t = 0; t < poly->getNumTerms(); t++)
+	for (int t = 0; t < poly->getNumUnivariateTerms(); t++)
 	{
 		for (int v = 0; v < poly->getNumVariables(); v++)
 		{
@@ -849,12 +828,12 @@ double Polynomial::integrateOverInterval(double a, double b, int var)
 }
 
 // checks if constant
-bool Polynomial::isConstant()
+bool UnivariatePolynomial::isConstant()
 {
 	bool allExpoZero = true;
 	for (int t = 0; t < numTerms; t++)
 	{
-		if (!isConstantTerm(t))
+		if (!isConstantUnivariateTerm(t))
 		{
 			allExpoZero = false;
 			return allExpoZero;
@@ -864,7 +843,7 @@ bool Polynomial::isConstant()
 }
 
 // checks if constant term
-bool Polynomial::isConstantTerm(int t)
+bool UnivariatePolynomial::isConstantUnivariateTerm(int t)
 {
 	bool allExpoZero = true;
 	for (int v = 0; v < numVariables; v++)
@@ -876,7 +855,7 @@ bool Polynomial::isConstantTerm(int t)
 }
 
 // checks if linear
-bool Polynomial::isLinear() // TEST
+bool UnivariatePolynomial::isLinear() // TEST
 {
 	int numExponents = 0;
 	for (int t = 0; t < numTerms; t++)
@@ -893,34 +872,8 @@ bool Polynomial::isLinear() // TEST
 	return true;
 }
 
-// orders using lex order
-void Polynomial::lexOrder()
-{
-	// LME nonzero entry of alpha-beta = (a_1 - b_1, ... , a_n - b_n) is positive
-	
-	Term* temp = new Term;
-	
-	for (int t1 = 0; t1 < getNumTerms(); t1++)
-	{
-		for (int t2 = t1 + 1; t2 < getNumTerms(); t2++)
-		{
-			for (int var = 0; var < getNumVariables(); var++)
-			{
-				if (getExponent(t1, var) - getExponent(t2, var) < 0) // switch terms t1 and t2
-				{
-					temp->coefficient = getCoefficient(t2);
-					temp->exponents = getExponents(t2);
-					
-					setTerm(t2, getTerm(t1));
-					setTerm(t1, temp);
-				}
-			}
-		}
-	}
-}
-
-// print polynomial
-void Polynomial::printPolynomial()
+// print UnivariatePolynomial
+void UnivariatePolynomial::printUnivariatePolynomial()
 {
 	bool nonConstant = false, oneMoreNonZero = false;
 	int count = 0;
@@ -949,7 +902,7 @@ void Polynomial::printPolynomial()
 		}
 		
 		if (!leading) // empty
-			cout << "EMPTY POLYNOMIAL: enter values for coefficients and exponents";
+			cout << "EMPTY UnivariatePolynomial: enter values for coefficients and exponents";
 		else // not empty
 		{
 			if (getCoefficient(t) != 0) // nonzero coefficient
@@ -994,9 +947,9 @@ void Polynomial::printPolynomial()
 	cout << endl;
 }
 
-// print polynomial
+// print UnivariatePolynomial
 // For EU's
-void Polynomial::printPolynomial(int player, int strat)
+void UnivariatePolynomial::printUnivariatePolynomial(int player, int strat)
 {
 	bool nonConstant = false, oneMoreNonZero = false;
 	int count = 0;
@@ -1025,7 +978,7 @@ void Polynomial::printPolynomial(int player, int strat)
 		}
 		
 		if (!leading) // empty
-			cout << "EMPTY POLYNOMIAL: enter values for coefficients and exponents";
+			cout << "EMPTY UnivariatePolynomial: enter values for coefficients and exponents";
 		else // not empty
 		{
 			if (getCoefficient(t) != 0) // nonzero coefficient
@@ -1069,11 +1022,11 @@ void Polynomial::printPolynomial(int player, int strat)
 }
 
 // remove term
-void Polynomial::removeTerm(int &t)
+void UnivariatePolynomial::removeUnivariateTerm(int &t)
 {	
 	int count = 0;
-	Term* curTerm;
-	Term* previousTerm;
+	UnivariateTerm* curUnivariateTerm;
+	UnivariateTerm* previousUnivariateTerm;
 	
 	if (t == 0)
 	{
@@ -1082,23 +1035,23 @@ void Polynomial::removeTerm(int &t)
 	}
 	else
 	{
-		curTerm = leading;
+		curUnivariateTerm = leading;
 		while (count < t)
 		{
-			previousTerm = curTerm;
-			curTerm = curTerm->next;
+			previousUnivariateTerm = curUnivariateTerm;
+			curUnivariateTerm = curUnivariateTerm->next;
 			count++;
 		}
-		previousTerm->next = curTerm->next;
-		delete curTerm;
-		curTerm = curTerm->next;
+		previousUnivariateTerm->next = curUnivariateTerm->next;
+		delete curUnivariateTerm;
+		curUnivariateTerm = curUnivariateTerm->next;
 	}
 	numTerms--;
 	t--;
 }
 
 // set EU coeffs
-void Polynomial::setEUCoefficients(vector<int> coeffs, int numPlayers) // TEST
+void UnivariatePolynomial::setEUCoefficients(vector<int> coeffs, int numPlayers) // TEST
 {
 	// enters coeffs into the expected utility, leaving the last term as a_{n-1}
 	
@@ -1142,23 +1095,23 @@ void Polynomial::setEUCoefficients(vector<int> coeffs, int numPlayers) // TEST
 }
 
 // set EU exponents
-void Polynomial::setEUExponents(vector<vector<int> > exponents) // FINISH: need number of terms per polynomial
+void UnivariatePolynomial::setEUExponents(vector<vector<int> > exponents) // FINISH: need number of terms per UnivariatePolynomial
 {
 	// enters exponents into the expected utility
 	
 	// for (int t = 0; t < numTerms; t++)
-		// this->setTerm(t, exponents.at(t));
+		// this->setUnivariateTerm(t, exponents.at(t));
 }
 
 // set term
-void Polynomial::setTerm(int t, Term* temp)
+void UnivariatePolynomial::setUnivariateTerm(int t, UnivariateTerm* temp)
 {
 	this->setCoefficient(t, temp->coefficient);
-	this->setExponents(t, temp->exponents);
+	this->setExponents(t, temp->exponent);
 }
 
 // simplify
-void Polynomial::simplify()
+void UnivariatePolynomial::simplify()
 {
 	cout << "SIMPLIFY\n";
 	
@@ -1171,7 +1124,7 @@ void Polynomial::simplify()
 		if (getCoefficient(t) == 0 && numTerms > 1)
 		{
 			// cout << "IF\n";
-			removeTerm(t);
+			removeUnivariateTerm(t);
 		}
 	}
 	
@@ -1185,7 +1138,7 @@ void Polynomial::simplify()
 			sameAlpha = true;
 			for (int v = 0; v < numVariables; v++)
 			{
-				if (getTerm(t1)->exponents.at(v) != getTerm(t2)->exponents.at(v))
+				if (getUnivariateTerm(t1)->exponent.at(v) != getUnivariateTerm(t2)->exponent.at(v))
 					sameAlpha = false;
 			}
 			if (sameAlpha)
@@ -1193,7 +1146,7 @@ void Polynomial::simplify()
 				cout << "\tsame\n";
 				setCoefficient(t1, getCoefficient(t1) + getCoefficient(t2));
 				if (numTerms > 1)
-					removeTerm(t2);
+					removeUnivariateTerm(t2);
 			}
 		}
 	}
