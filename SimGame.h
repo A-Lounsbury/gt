@@ -102,7 +102,7 @@ class simGame
 		bool chickenCondition(vector<int>, vector<int>);
 		void computeBestResponses();
 		void computeChoices();
-		vector<vector<Polynomial*> > computeExpectedUtilities();
+		vector<vector<MultivariatePolynomial*> > computeExpectedUtilities();
 		void computeImpartiality();
 		void computeKStrategies();
 		void computeNumOutcomes();
@@ -138,7 +138,7 @@ class simGame
 		vector<int> rUnhash(int matrixIndex);
 		void saveKMatrixAsLatex(vector<int>, vector<double>);
 		bool shCondition(vector<int>, vector<int>);
-		double solve(Polynomial*, Polynomial*);
+		double solve(MultivariatePolynomial*, MultivariatePolynomial*);
 		vector<int> unhash(int);
 	public:
 		Player* getPlayer(int i) const { return players.at(i); }
@@ -288,7 +288,7 @@ void simGame<T>::addPlayer()
 	int c = -1, nS = -1, r = 0;
 	// int nT = -1, nV = 1;
 	LinkedList<T>* curList; 
-	Polynomial* p;
+	MultivariatePolynomial* p;
 	
 	// cout << "\nUtility: ";
 	// cin >> u;
@@ -324,11 +324,11 @@ void simGame<T>::addPlayer()
 		cin >> nT;
 		cout << "Enter the number of variables:  ";
 		cin >> nV;
-		p = new Polynomial(nT, nV, 0);
+		p = new MultivariatePolynomial(nT, nV, 0);
 		p->enterInfo();
 	}
 	else*/
-		p = new Polynomial();
+		p = new MultivariatePolynomial();
 	
 	Player* newPlayer = new Player(r, nS, c, p);
 	
@@ -1285,11 +1285,11 @@ void simGame<T>::computeChoices() // FINISH: knowledge; ktest3.txt outcome on kt
 // compute expected utilities
 // FIX: index, coeffs, send exponents to the polynomials
 template <typename T>
-vector<vector<Polynomial*> > simGame<T>::computeExpectedUtilities()
+vector<vector<MultivariatePolynomial*> > simGame<T>::computeExpectedUtilities()
 {
 	// choose player, then choose strategy
-	Polynomial* poly;
-	vector<vector<Polynomial*> > EU = vector<vector<Polynomial*> >(numPlayers);
+	MultivariatePolynomial* poly;
+	vector<vector<MultivariatePolynomial*> > EU = vector<vector<MultivariatePolynomial*> >(numPlayers);
 	for (int x = 0; x < numPlayers; x++)
 		EU.at(x).resize(players.at(x)->getNumStrats());
 	
@@ -1302,7 +1302,7 @@ vector<vector<Polynomial*> > simGame<T>::computeExpectedUtilities()
 			for (int j = 0; j < players.at(1)->getNumStrats(); j++) // terms
 				coeffs1.at(j) = payoffMatrix.at(0).at(i).at(j)->getNodeValue(1);
 			
-			poly = new Polynomial(players.at(1)->getNumStrats(), players.at(1)->getNumStrats() - 1, 0);
+			poly = new MultivariatePolynomial(players.at(1)->getNumStrats(), players.at(1)->getNumStrats() - 1, 0);
 			poly->setEUCoefficients(coeffs1, numPlayers);
 			EU.at(0).at(i) = poly;
 		}
@@ -1312,7 +1312,7 @@ vector<vector<Polynomial*> > simGame<T>::computeExpectedUtilities()
 			for (int i = 0; i < players.at(0)->getNumStrats(); i++) // terms
 				coeffs2.at(i) = payoffMatrix.at(0).at(i).at(j)->getNodeValue(0);
 			
-			poly = new Polynomial(players.at(0)->getNumStrats(), players.at(0)->getNumStrats() - 1, 0);
+			poly = new MultivariatePolynomial(players.at(0)->getNumStrats(), players.at(0)->getNumStrats() - 1, 0);
 			poly->setEUCoefficients(coeffs2, numPlayers);
 			EU.at(1).at(j) = poly;
 		}
@@ -1353,7 +1353,7 @@ vector<vector<Polynomial*> > simGame<T>::computeExpectedUtilities()
 							coeffs.at(players.at(1)->getNumStrats() * m + j) += num;
 						}
 					}
-					poly = new Polynomial(players.at(x)->getNumStrats(), numPlayers, 0);
+					poly = new MultivariatePolynomial(players.at(x)->getNumStrats(), numPlayers, 0);
 					poly->setEUCoefficients(coeffs, numPlayers);
 					EU.at(x).at(i) = poly;
 				}
@@ -1386,7 +1386,7 @@ vector<vector<Polynomial*> > simGame<T>::computeExpectedUtilities()
 							coeffs.at(players.at(0)->getNumStrats() * m + i) += num;
 						}
 					}					
-					poly = new Polynomial(players.at(x)->getNumStrats(), numPlayers, 0);
+					poly = new MultivariatePolynomial(players.at(x)->getNumStrats(), numPlayers, 0);
 					poly->setEUCoefficients(coeffs, numPlayers);
 					EU.at(x).at(j) = poly;
 				}
@@ -1463,7 +1463,7 @@ vector<vector<Polynomial*> > simGame<T>::computeExpectedUtilities()
 					for (int n = 0; (unsigned)n < coeffs.size(); n++)
 						cout << "coeffs.at(" << n << "): " << coeffs.at(n) << endl;
 					
-					poly = new Polynomial(players.at(x)->getNumStrats(), numPlayers, 0);
+					poly = new MultivariatePolynomial(players.at(x)->getNumStrats(), numPlayers, 0);
 					poly->setEUCoefficients(coeffs, numPlayers);
 					poly->setEUExponents(exponents);
 					EU.at(x).at(strat) = poly;
@@ -1610,7 +1610,7 @@ void simGame<T>::computeMixedStrategies()
 {
 	vector<int> coeffs1 = vector<int>(players.at(0)->getNumStrats()); // coefficients for P_1's expected utilities
 	vector<int> coeffs2 = vector<int>(players.at(1)->getNumStrats()); // coefficients for P_2's expected utilities
-	vector<vector<Polynomial*> > EU;
+	vector<vector<MultivariatePolynomial*> > EU;
 	// double p = -1.0, q = -1.0;
 	
 	EU = computeExpectedUtilities();
@@ -1620,7 +1620,7 @@ void simGame<T>::computeMixedStrategies()
 		for (int n = 0; (unsigned)n < EU.at(x).size(); n++)
 		{
 			cout << "EU_" << x + 1 << "(s_" << n + 1 << ") = ";
-			EU.at(x).at(n)->printPolynomial();
+			EU.at(x).at(n)->printMultivariatePolynomial();
 		}
 		if (x < numPlayers - 1)
 			cout << "--------------------------\n";
@@ -5300,7 +5300,7 @@ bool simGame<T>::shCondition(vector<int> eq1, vector<int> eq2) // FINISH: access
 
 // solve polynomial equation for x
 template <typename T>
-double simGame<T>::solve(Polynomial* p1, Polynomial* p2) // FIX
+double simGame<T>::solve(MultivariatePolynomial* p1, MultivariatePolynomial* p2) // FIX
 {
 	if (p1->getNumVariables() > 1 || p2->getNumVariables() > 1 )
 	{

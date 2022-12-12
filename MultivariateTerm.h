@@ -17,7 +17,7 @@ using namespace std;
 struct MultivariateTerm
 {
 	double coefficient;
-	int exponents;
+	vector<int> exponents;
 	MultivariateTerm* next;
 	
 	int getCoefficient()                { return coefficient; }

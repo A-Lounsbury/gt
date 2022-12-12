@@ -43,15 +43,28 @@ class MultivariatePolynomial
 		int getSizeDerivatives() 									{ return derivatives.size(); }
 		// with respect to v
 		int getSizeDerivativesWRT(int v) 							{ return derivatives.at(v).size(); }
+
 		MultivariateTerm* getTerm(int n) const						
 		{
 			MultivariateTerm* curTerm = this->leading;
 			for (int i = 0; i < n; i++)
 				curTerm = curTerm->next;
-			return curTerm
+			return curTerm;
 		}
+
 		MultivariateTerm* getTrailing() const 						{ return trailing; }
-		void setNumMultivariateTerms(int num) 						{ numTerms = num; }
+
+		void setCoefficient(int i, int c)
+		{
+			this->getTerm(i)->coefficient = c;
+		}
+
+		setExponent(int term, v, this->getExponent(t1, v) + p.getExponent(t2, v))
+		{
+
+		}
+
+		void setNumTerms(int num) 									{ numTerms = num; }
 		void setTotalDegree(int num) 								{ totalDegree = num; }
 		
 		MultivariatePolynomial();
@@ -234,14 +247,14 @@ MultivariatePolynomial::~MultivariatePolynomial()
 	else if (&p == NULL || (this == NULL && &p == NULL))
 		return *this;
 	
-	/*if (this->getNumMultivariateTerms() >= p.getNumMultivariateTerms())
+	/*if (this->getNumTerms() >= p.getNumTerms())
 	{		
 		// start with highest degree/first MultivariateTerm in this
-		for (int t1 = 0; t1 < this->getNumMultivariateTerms(); t1++)
+		for (int t1 = 0; t1 < this->getNumTerms(); t1++)
 		{					
 			inP = false;
 			// check if p has a MultivariateTerm of the same degree
-			for (int t2 = 0; t2 < p.getNumMultivariateTerms(); t2++)
+			for (int t2 = 0; t2 < p.getNumTerms(); t2++)
 			{						
 				if (this->getExponents(t1) == p.getExponents(t2))
 				{							
@@ -265,11 +278,11 @@ MultivariatePolynomial::~MultivariatePolynomial()
 	else
 	{		
 		// start with highest degree/first MultivariateTerm in p
-		for (int t1 = 0; t1 < p.getNumMultivariateTerms(); t1++)
+		for (int t1 = 0; t1 < p.getNumTerms(); t1++)
 		{
 			inThis = false;
 			// check if this has a MultivariateTerm of the same degree
-			for (int t2 = 0; t2 < this->getNumMultivariateTerms(); t2++)
+			for (int t2 = 0; t2 < this->getNumTerms(); t2++)
 			{
 				if (this->getExponents(t2) == p.getExponents(t1))
 				{
@@ -291,12 +304,12 @@ MultivariatePolynomial::~MultivariatePolynomial()
 		}				
 	}*/
 	
-	/*cout << "\nNT: " << this->getNumMultivariateTerms() << endl;
-	cout << "NT: " << p.getNumMultivariateTerms() << endl;
+	/*cout << "\nNT: " << this->getNumTerms() << endl;
+	cout << "NT: " << p.getNumTerms() << endl;
 	
-	for (int t = 0; t < this->getNumMultivariateTerms(); t++)
+	for (int t = 0; t < this->getNumTerms(); t++)
 		poly.addMultivariateTerm(this->getMultivariateTerm(t));
-	for (int t = 0; t < p.getNumMultivariateTerms(); t++)
+	for (int t = 0; t < p.getNumTerms(); t++)
 		poly.addMultivariateTerm(p.getMultivariateTerm(t));
 	
 	poly.simplify();
@@ -310,11 +323,11 @@ MultivariatePolynomial MultivariatePolynomial::operator*(const MultivariatePolyn
 	if (nV < p.getNumVariables())
 		nV = p.getNumVariables();
 				
-	MultivariatePolynomial* poly = new MultivariatePolynomial(this->getNumMultivariateTerms() * p.getNumVariables(), nV, -1);
+	MultivariatePolynomial* poly = new MultivariatePolynomial(this->getNumTerms() * p.getNumVariables(), nV, -1);
 	
-	for (int t1 = 0; t1 < this->getNumMultivariateTerms(); t1++)
+	for (int t1 = 0; t1 < this->getNumTerms(); t1++)
 	{
-		for (int t2 = 0; t2 < p.getNumMultivariateTerms(); t2++)
+		for (int t2 = 0; t2 < p.getNumTerms(); t2++)
 		{
 			poly->setCoefficient(t1 + t2, this->getCoefficient(t1) + p.getCoefficient(t2));
 			for (int v = 0; v < poly->getNumVariables(); v++)
@@ -333,16 +346,16 @@ MultivariatePolynomial* MultivariatePolynomial::operator-(const MultivariatePoly
 	int pMultivariateTermIndex = -1, thisMultivariateTermIndex = -1;
 	bool inP = false, inThis = false;
 	
-	if (this->getNumMultivariateTerms() >= p.getNumMultivariateTerms())
+	if (this->getNumTerms() >= p.getNumTerms())
 	{
-		poly = new MultivariatePolynomial(this->getNumMultivariateTerms(), this->getNumVariables(), -1); // -1 bc the var parameter isn't needed and is irrelevant
+		poly = new MultivariatePolynomial(this->getNumTerms(), this->getNumVariables(), -1); // -1 bc the var parameter isn't needed and is irrelevant
 		
 		// start with highest degree/first MultivariateTerm in this
-		for (int i = 0; i < this->getNumMultivariateTerms(); i++)
+		for (int i = 0; i < this->getNumTerms(); i++)
 		{
 			inP = false;
 			// check if p has a MultivariateTerm of the same degree
-			for (int j = 0; j < p.getNumMultivariateTerms(); j++)
+			for (int j = 0; j < p.getNumTerms(); j++)
 			{
 				if (p.getExponents(j) == this->getExponents(i))
 				{
@@ -365,14 +378,14 @@ MultivariatePolynomial* MultivariatePolynomial::operator-(const MultivariatePoly
 	}
 	else
 	{
-		poly = new MultivariatePolynomial(p.getNumMultivariateTerms(), p.getNumVariables(), -1); // -1 bc the var parameter isn't needed and is irrelevant
+		poly = new MultivariatePolynomial(p.getNumTerms(), p.getNumVariables(), -1); // -1 bc the var parameter isn't needed and is irrelevant
 		
 		// start with highest degree/first MultivariateTerm in p
-		for (int i = 0; i < p.getNumMultivariateTerms(); i++)
+		for (int i = 0; i < p.getNumTerms(); i++)
 		{
 			inThis = false;
 			// check if this has a MultivariateTerm of the same degree
-			for (int j = 0; j < this->getNumMultivariateTerms(); j++)
+			for (int j = 0; j < this->getNumTerms(); j++)
 			{
 				if (this->getExponents(j) == p.getExponents(i))
 				{
@@ -400,10 +413,10 @@ MultivariatePolynomial* MultivariatePolynomial::operator-(const MultivariatePoly
 // MultivariatePolynomial equality
 bool MultivariatePolynomial::operator==(const MultivariatePolynomial &p)
 {
-	if (this->getDegree() != p.getDegree() || this->getNumMultivariateTerms() != p.getNumMultivariateTerms())
+	if (this->getDegree() != p.getDegree() || this->getNumTerms() != p.getNumTerms())
 		return false;
 	
-	for (int i = 0; i < p.getNumMultivariateTerms(); i++)
+	for (int i = 0; i < p.getNumTerms(); i++)
 	{
 		if (this->getCoefficient(i) != p.getCoefficient(i))// || this->getExponents(i) != p.getExponents(i))
 			return false;
@@ -541,15 +554,15 @@ MultivariatePolynomial* MultivariatePolynomial::derivative(int var)
 {
 	// computes the derivative of this wrt to the var-th variable
 	
-	MultivariatePolynomial* poly = new MultivariatePolynomial(this->getNumMultivariateTerms(), this->getNumVariables(), 0);
-	for (int t = 0; t < poly->getNumMultivariateTerms(); t++)
+	MultivariatePolynomial* poly = new MultivariatePolynomial(this->getNumTerms(), this->getNumVariables(), 0);
+	for (int t = 0; t < poly->getNumTerms(); t++)
 	{
 		poly->setCoefficient(t, this->getCoefficient(t));
 		for (int v = 0; v < poly->getNumVariables(); v++)
 			poly->setExponent(t, v, this->getExponent(t, v));
 	}
 	
-	for (int t = 0; t < poly->getNumMultivariateTerms(); t++)
+	for (int t = 0; t < poly->getNumTerms(); t++)
 	{
 		if (poly->getExponent(t, var) != 0) // var-th variable occurs
 		{			
@@ -788,7 +801,7 @@ void MultivariatePolynomial::insertMultivariateTerm(int t, MultivariateTerm* Mul
 // integrate
 MultivariatePolynomial* MultivariatePolynomial::integrate(int var) // FINISH (... + c)
 {
-	MultivariatePolynomial* poly = new MultivariatePolynomial(getNumMultivariateTerms(), getNumVariables(), 0);
+	MultivariatePolynomial* poly = new MultivariatePolynomial(getNumTerms(), getNumVariables(), 0);
 	
 	// copying this pointer
 	for (int t = 0; t < numTerms; t++)
@@ -814,9 +827,9 @@ double MultivariatePolynomial::integrateOverInterval(double a, double b, int var
 	// cout << "INTEGRATEOVER\n";
 	
 	double num = -1;
-	MultivariatePolynomial* poly = new MultivariatePolynomial(getNumMultivariateTerms(), getNumVariables(), 0);
+	MultivariatePolynomial* poly = new MultivariatePolynomial(getNumTerms(), getNumVariables(), 0);
 	
-	for (int t = 0; t < poly->getNumMultivariateTerms(); t++)
+	for (int t = 0; t < poly->getNumTerms(); t++)
 	{
 		for (int v = 0; v < poly->getNumVariables(); v++)
 		{

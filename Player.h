@@ -7,7 +7,7 @@ Purpose: Game theory program
 
 #ifndef PLAYER_H
 #define PLAYER_H
-#include "Polynomial.h"
+#include "MultivariatePolynomial.h"
 #include "Knowledge.h"
 #include <iostream>
 #include <iomanip>
@@ -28,13 +28,13 @@ class Player
 		int numStrats;
 		int rationality;
 		Knowledge* knowledge;
-		Polynomial* preference;
+		MultivariatePolynomial* preference;
 		
 		~Player() 							{ delete preference; }
 		int getKChoice() const 				{ return kChoice; }
 		void printPlayer() const 			{ cout << this; }
-		Polynomial* getPreference() const 	{ return preference; }
-		void setPreference(Polynomial* p) 	{ preference = p; }
+		MultivariatePolynomial* getPreference() const 	{ return preference; }
+		void setPreference(MultivariatePolynomial* p) 	{ preference = p; }
 		
 		friend ostream& operator << (ostream& os, const Player& p)
 		{
@@ -43,7 +43,7 @@ class Player
 			os << "\n" << "Choice:  " << right << setw(22) << "s_" << p.choice + 1;
 			os << "\n" << "k-rationalizability Choice:  s_" << p.kChoice + 1;
 			os << "\n" << "Preference:  " << right << setw(17);
-			p.preference->printPolynomial();
+			p.preference->printMultivariatePolynomial();
 			cout << endl;
 			return os;
 		}
@@ -56,10 +56,10 @@ class Player
 			kChoice = -1;
 			knowledge = new Knowledge(numPlayers);
 			// -1, numVariables, var // nT = -1 or var (x) = -1 is default
-			preference = new Polynomial(-1, numPlayers, x);
+			preference = new MultivariatePolynomial(-1, numPlayers, x);
 		}
 		
-		Player(int r, int n, char s, Polynomial* p)
+		Player(int r, int n, char s, MultivariatePolynomial* p)
 		{
 			rationality = r;
 			numStrats = n;

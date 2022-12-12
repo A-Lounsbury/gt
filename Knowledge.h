@@ -7,7 +7,7 @@ Purpose: Game theory program
 
 #ifndef KNOWLEDGE_H
 #define KNOWLEDGE_H
-#include "Polynomial.h"
+#include "MultivariatePolynomial.h"
 #include <iostream>
 #include <iomanip>
 #include <iterator>
