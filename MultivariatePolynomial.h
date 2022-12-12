@@ -59,10 +59,9 @@ class MultivariatePolynomial
 			this->getTerm(i)->coefficient = c;
 		}
 
-		setExponent(int term, v, this->getExponent(t1, v) + p.getExponent(t2, v))
-		{
-
-		}
+		void setCoefficient(int t, double num) 			{ getTerm(t)->setCoefficient(num); }
+		void setExponent(int t, int v, int num) 		{ getTerm(t)->exponents.at(v) = num; }
+		void setExponents(int t, vector<int> expo) 		{ getTerm(t)->setExponents(expo); }
 
 		void setNumTerms(int num) 									{ numTerms = num; }
 		void setTotalDegree(int num) 								{ totalDegree = num; }

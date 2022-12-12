@@ -21,13 +21,14 @@ struct MultivariateTerm
 	MultivariateTerm* next;
 	
 	int getCoefficient()                { return coefficient; }
-	int getExponent()                   { return exponents; }
+	vector<int> getExponent()           { return exponents; }
 	void setCoefficient(int c)          { coefficient = c; }
-	void setExponents(int e)            { exponents = e; }
+	void setExponents(vector<int> e)	{ exponents = e; }
 	void setNext(MultivariateTerm* u)   { this->next = u; }
     void printTerm()
 	{
-		cout << coefficient << "^" << exponents;
+		cout << coefficient << "^";
+		for 
 	}
 };
 
