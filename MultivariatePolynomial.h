@@ -412,7 +412,7 @@ MultivariatePolynomial* MultivariatePolynomial::operator-(const MultivariatePoly
 // MultivariatePolynomial equality
 bool MultivariatePolynomial::operator==(const MultivariatePolynomial &p)
 {
-	if (this->getDegree() != p.getDegree() || this->getNumTerms() != p.getNumTerms())
+	if (this->getTotalDegree() != p.getTotalDegree() || this->getNumTerms() != p.getNumTerms())
 		return false;
 	
 	for (int i = 0; i < p.getNumTerms(); i++)
