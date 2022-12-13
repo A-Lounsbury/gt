@@ -841,7 +841,7 @@ bool simGame<T>::checkSHConditions()
 
 // All outcomes are PO
 template <typename T>
-bool simGame<T>::checkZSConditions() // FIX
+bool simGame<T>::checkZSConditions()
 {	
 	vector<int> profile = vector<int>(numPlayers);
 	
@@ -1087,7 +1087,7 @@ void simGame<T>::communication()
 
 // compute BR's
 template <typename T>
-void simGame<T>::computeBestResponses() // FIX: create maxPayoff() function like maxStrat()
+void simGame<T>::computeBestResponses()
 {
 	int maxValue = -std::numeric_limits<int>::max();
 	LinkedList<T>* curList;
@@ -1268,7 +1268,6 @@ void simGame<T>::computeChoices()
 }
 
 // compute expected utilities
-// FIX: index, coeffs, send exponents to the polynomials
 template <typename T>
 vector<vector<Polynomial*> > simGame<T>::computeExpectedUtilities()
 {
@@ -2050,18 +2049,8 @@ bool simGame<T>::isPureEquilibrium(vector<int> profile)
 	return true;
 }
 
-/*
-      A  |  B
-A | 3, 0 | 2, 0
-B | 1, 0 | 1, 0
-*/
-/*****************************
-- everything is a best response
-- everything is better
-*****************************/
-// checks if s is strictly dominant
 template <typename T>
-bool simGame<T>::isStrictlyDominant(int x, int s) // FIX: 3players.txt ---> communication(), reduce(); want to past just the strategy
+bool simGame<T>::isStrictlyDominant(int x, int s)
 {	
 	// determine if s is a dominant strategy for P_x
 	LinkedList<T>* curList;
@@ -2258,18 +2247,6 @@ bool simGame<T>::isStrictlyDominated(int x, int s)
 }
 
 // checks if s is weakly dominant
-/* A is weakly dominant over B for P_1
-          A      |       B      |       C  
-A | [2,1], [0,1] | [1,1], [0,1] | [1,1], [0,1] <--
-B | [1,0], [0,1] | [1,1], [0,1] | [1,1], [0,1] <--
-C | [1,0], [0,1] | [1,1], [0,1] | [1,1], [0,1]
-*/
-/*****************************************************************************
-everything is a best response
-at least one payoff is better
-the rest are at greater than or equal to the highest payoff for that strategy
-*****************************************************************************/
-// FIX: current written as isWeaklyDominated
 template <typename T>
 bool simGame<T>::isWeaklyDominant(int x, int s)
 {	
@@ -2515,7 +2492,6 @@ bool simGame<T>::isWeaklyDominated(int x, int s)
 }
 
 // returns vector w/ maximum number of characters added by brackets in BR's in each column
-// FIX
 template <typename T>
 vector<vector<int> > simGame<T>::maxBestResponseLengths()
 {	
@@ -2613,11 +2589,9 @@ vector<vector<int> > simGame<T>::maxEntryLengths(vector<vector<vector<bool> > > 
 	return lengths;
 }*/
 
-// returns the maximum payoff in a specific row, column, or section of matrices
-// in the third case, it is comparing the values for the same ij-entry of each matrix
-// in the section
+// returns the maximum payoff in a specific row, column, or section of matrices. In the third case, it is comparing the values for the same ij-entry of each matrix in the section
 template <typename T>
-int simGame<T>::maxPayoffInRowColOrMatrices(int x, vector<int> choices) // FIX: x >= 2 called from isStrictlyDominant() called from communication()
+int simGame<T>::maxPayoffInRowColOrMatrices(int x, vector<int> choices)
 {	
 	int maxVal = -std::numeric_limits<int>::max();
 	LinkedList<T>* curList;
@@ -2691,7 +2665,6 @@ vector<vector<int> > simGame<T>::maxPayoffLengths()
 }
 
 // finds the max strat in a row, col, or matrix based on a set of other predetermined choices
-// FIX: isWeaklyDominant not needed; 3players.txt in commication()
 template <typename T>
 int simGame<T>::maxStratInRowColOrMatrices(int x, vector<int> choices)
 {	
@@ -3542,7 +3515,6 @@ void simGame<T>::printKStrategies()
 }
 
 // print payoff matrix
-// FIX: spacing of P_2's strat labels
 template <typename T>
 void simGame<T>::printPayoffMatrix()
 {
@@ -3722,7 +3694,6 @@ void simGame<T>::printPayoffMatrix()
 }
 
 // print payoff matrix without info
-// FIX: spacing of P_2's strat labels
 template <typename T>
 void simGame<T>::printPayoffMatrixSansInfo()
 {	
@@ -4013,7 +3984,7 @@ void simGame<T>::printPureEquilibria()
 
 // produce a random game with payoffs between 0 and 100
 template <typename T>
-void simGame<T>::randGame() // FIX: gives a suspiciously large amount of IH's, lots of incorrect IH's; randomizes individual payoffs rather than game types
+void simGame<T>::randGame()
 {
 	bool addMoreOutcomesPast2 = false; // kMatrix
 	int nP = -1, nS = -1, oldNumPlayers = -1, oldNumStrats[numPlayers], oldSize = -1;
@@ -4914,7 +4885,7 @@ void simGame<T>::saveKMatrixAsLatex(vector<int> choices, vector<double> EU)
 
 // save payoff matrix to be displayed in LaTeX
 template <typename T>
-void simGame<T>::savePayoffMatrixAsLatex() // FIX
+void simGame<T>::savePayoffMatrixAsLatex()
 {
 	LinkedList<T>* curList;
 	ofstream outfile;
@@ -5244,7 +5215,7 @@ bool simGame<T>::shCondition(vector<int> eq1, vector<int> eq2)
 
 // solve polynomial equation for x
 template <typename T>
-double simGame<T>::solve(Polynomial* p1, Polynomial* p2) // FIX
+double simGame<T>::solve(Polynomial* p1, Polynomial* p2)
 {
 	if (p1->getNumVariables() > 1 || p2->getNumVariables() > 1 )
 	{
