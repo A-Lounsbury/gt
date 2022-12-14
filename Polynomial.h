@@ -17,8 +17,10 @@ Purpose: for holding EU's
 #include "inputValidation.cpp"
 #include "term.h"
 
-#include <iostream>
+#include <algorithm>
 #include <cmath>
+#include <cctype>
+#include <iostream>
 #include <vector>
 #include <sstream>
 using namespace std;
@@ -91,7 +93,8 @@ class Polynomial
 		void setEUExponents(vector<vector<int> >);
 		void setTerm(int, Term*);
 		void simplify();
-		void tokenize(string const &s, const char delim, vector<string> &out);
+		vector<string> split(string, const char )
+		void tokenize(string const &, const char, vector<string> &);
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -217,8 +220,35 @@ void Polynomial::tokenize(string const &str, const char delim, vector<string> &o
 		out.push_back(s);
 }
 
+vector<string> split(string str, const char c)
+{
+    string substring = "";
+	vector<string> subStrings;
+    for (auto x : str)
+    {
+        if (x == c)
+        {
+            subStrings.push_back(substring);
+            substring = "";
+        }
+        else
+            substring = substring + x;
+    }
+    subStrings.push_back(substring);
+	return subStrings;
+}
+
 Polynomial::Polynomial(string s)
 {
+	// removing spaces
+	s.erase(remove_if(s.begin(), s.end(), ::isspace), s.end());
+	cout << s << endl;
+
+	vector<string> terms = split(s, '+');
+
+	for (auto t : terms)
+		cout << t << endl;
+
 	for (int i = 0; i < s.length(); i++)
 	{
 		if (isalpha(s[i]))
