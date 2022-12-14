@@ -31,9 +31,9 @@ class Polynomial
 	private:
 		Term* leading;
 		Term* trailing;
-		int numTerms;
-		int numVariables;
-		int totalDegree;
+		int numTerms = -1;
+		int numVariables = -1;
+		int totalDegree = -1;
 		vector<vector<Polynomial*> > derivatives;
 		bool linear;
 	public:		
@@ -275,6 +275,8 @@ Polynomial::Polynomial(string s)
 	vector<string> terms = split(s, '+');
 	numTerms = terms.size();
 
+	numVariables = 1;
+
 	// splitting over ^'s
 	vector<vector<string> > components;
 	for (auto t : terms)
@@ -297,7 +299,7 @@ Polynomial::Polynomial(string s)
 	for (int i = 0; i < numTerms; i++)
 	{
 		vector<int> temp(numTerms);
-		temp.at(0) = exponents.at(0);
+		temp.at(0) = exponents.at(i);
 		this->appendTerm(coeffs.at(i), temp);
 	}
 
@@ -557,78 +559,6 @@ bool Polynomial::operator>(const Polynomial &p)
 		return false;
 	else
 		return true;
-}
-
-// add a term
-void Polynomial::addTerm(int coeff, vector<int> expo) // TEST
-{
-	cout << "ADDTERM other\n";
-	
-	int n = 0, numExponents = 0;
-	while ((unsigned)n < expo.size() && numExponents < 2)
-	{
-		if (expo.at(n) != 0)
-			numExponents++;
-		n++;
-	}
-	if (linear && numExponents > 1)
-		linear = false;
-	
-	Term* newTerm = new Term;
-	newTerm->coefficient = coeff;
-	newTerm->exponents = expo;
-	
-	if (!leading)
-	{
-		cout << "leading == NULL\n";
-		leading = newTerm;
-		trailing = newTerm;
-	}
-	else
-	{
-		cout << "ELSE\n";
-		trailing->next = newTerm;
-		cout << "test1\n";
-		trailing = newTerm;
-		cout << "test2\n";
-	}
-	numTerms++;
-}
-
-// add a term
-void Polynomial::addTerm(Term* term) // TEST
-{
-	cout << "ADDTERM\n";
-	
-	// Check if new term is nonlinear
-	if (linear)
-	{
-		int n = 0, numExponents = 0;
-		while ((unsigned)n < term->exponents.size() && numExponents < 2)
-		{
-			if (term->exponents.at(n) != 0)
-				numExponents++;
-			n++;
-		}
-		if (linear && numExponents > 1)
-			linear = false;
-	}
-	
-	if (!leading)
-	{
-		leading = term;
-		trailing = term;
-	}
-	else
-	{
-		trailing->next = term;
-		trailing = term;
-	}
-	numTerms++;
-	
-	cout << "END ADDTERM: ";
-	this->printPolynomial();
-	cout << endl;
 }
 
 // get total degree
@@ -1022,38 +952,38 @@ void Polynomial::printPolynomial()
 {
 	bool nonConstant = false, oneMoreNonZero = false;
 	int count = 0;
-	
-	// simplify();
-	for (int t = 0; t < numTerms; t++) // terms
+
+	if (!leading)
+		cout << "EMPTY POLYNOMIAL: enter values for coefficients and exponents";
+	else
 	{
-		// check if not constant
-		nonConstant = false;
-		for (int v = 0; v < numVariables; v++)
+		// simplify();
+		for (int t = 0; t < numTerms; t++)
 		{
-			if (getExponent(t, v) != 0)
-				nonConstant = true; // at least one is nonzero
-		}
-		
-		oneMoreNonZero = false;
-		count = t + 1;
-		if (t < numTerms - 1) // checks if there's one more nonzero term
-		{
-			while (!oneMoreNonZero && count != numTerms)
+			// check if not constant
+			nonConstant = false;
+			for (int v = 0; v < numVariables; v++)
 			{
-				if (getCoefficient(count) != 0)
-					oneMoreNonZero = true;
-				
-				count++;
+				if (getExponent(t, v) != 0)
+					nonConstant = true; // at least one is nonzero
 			}
-		}
+			// check if there's one more nonzero term
+			oneMoreNonZero = false;
+			count = t + 1;
+			if (t < numTerms - 1)
+			{
+				while (!oneMoreNonZero && count < numTerms)
+				{
+					if (this->getCoefficient(count) != 0)
+						oneMoreNonZero = true;
+					count++;
+				}
+			}
 		
-		if (!leading) // empty
-			cout << "EMPTY POLYNOMIAL: enter values for coefficients and exponents";
-		else // not empty
-		{
 			if (getCoefficient(t) != 0) // nonzero coefficient
 			{
-				if (t == 0 && getCoefficient(t) < 0) // first term negative
+				// if first term negative
+				if (t == 0 && getCoefficient(t) < 0)
 				{
 					if ((getCoefficient(t) != -1 && nonConstant) || !nonConstant)
 						cout << getCoefficient(t);
@@ -1066,6 +996,7 @@ void Polynomial::printPolynomial()
 						cout << abs(getCoefficient(t));
 				}
 				
+				// printint x^...
 				for (int v = 0; v < numVariables; v++)
 				{
 					if (getExponent(t, v) != 0)
@@ -1076,6 +1007,8 @@ void Polynomial::printPolynomial()
 							if (getExponent(t, v) != 1)
 								cout << "^" << getExponent(t, v);
 					}
+					else
+						cout << "HERE";
 				}
 				
 				if (t < numTerms - 1 && oneMoreNonZero && getCoefficient(t + 1) >= 0) // && exists(a_k)[i < k <= n && a_k != 0]
