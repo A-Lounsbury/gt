@@ -542,6 +542,11 @@ void MultivariatePolynomial::addMultivariateTerm(MultivariateTerm* MultivariateT
 	cout << endl;
 }
 
+void MultivariatePolynomial::computeTotalDegree()
+{
+	return;
+}
+
 // get derivative
 // FINISH: linear derivatives from nonlinear MultivariatePolynomials
 MultivariatePolynomial* MultivariatePolynomial::derivative(int var)

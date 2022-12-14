@@ -1320,7 +1320,7 @@ vector<vector<MultivariatePolynomial*> > simGame<T>::computeExpectedUtilities()
 	}
 	else // numPlayers >= 3
 	{
-		int num = -std::numeric_limits<T>::max();
+		T num = -std::numeric_limits<T>::max();
 		vector<int> coeffs;
 		vector<vector<int>> exponents;
 		vector<int> profile;
@@ -1337,7 +1337,7 @@ vector<vector<MultivariatePolynomial*> > simGame<T>::computeExpectedUtilities()
 					{
 						// Get Coefficients
 						profile = unhash(m);
-						profile.at(x) = std::numeric_limits<T>::quiet_NaN();
+						profile.at(x) = std::numeric_limits<int>::quiet_NaN();
 						for (int j = 0; j < players.at(1)->getNumStrats(); j++)
 						{
 							profile.at(0) = j;
@@ -1367,7 +1367,7 @@ vector<vector<MultivariatePolynomial*> > simGame<T>::computeExpectedUtilities()
 					for (int m = 0; (unsigned)m < payoffMatrix.size(); m++)
 					{
 						profile = unhash(m);
-						profile.at(x) = std::numeric_limits<T>::quiet_NaN();
+						profile.at(x) = std::numeric_limits<int>::quiet_NaN();
 						for (int i = 0; i < players.at(0)->getNumStrats(); i++)
 						{
 							profile.at(0) = i;
@@ -1441,7 +1441,7 @@ vector<vector<MultivariatePolynomial*> > simGame<T>::computeExpectedUtilities()
 							}
 						
 						// done with profile, use it to save this terms set of exponents
-						profile.at(x) = std::numeric_limits<T>::quiet_NaN();
+						profile.at(x) = std::numeric_limits<int>::quiet_NaN();
 						exponents.push_back(profile);
 						
 						if (product == 1 && x != numPlayers - 1)
@@ -1922,7 +1922,7 @@ template <typename T>
 vector<vector<vector<bool> > > simGame<T>::extraSpacesInColumns()
 {	
 	int numBestResponses = 0;
-	LinkedList<int>* curList;
+	LinkedList<T>* curList;
 	vector<vector<vector<bool> > > playersInColumns = vector<vector<vector<bool> > >(payoffMatrix.size());
 	
 	if (players.at(0)->getNumStrats() == 2)
@@ -4827,7 +4827,7 @@ vector<int> simGame<T>::rUnhash(int matrixIndex)
 template <typename T>
 void simGame<T>::saveKMatrixAsLatex(vector<int> choices, vector<double> EU) // FINISH
 {
-	int val = -std::numeric_limits<T>::max();
+	T val = -std::numeric_limits<T>::max();
 	LinkedList<T>* curList;
 	ofstream outfile;
 	string filename;
@@ -4985,7 +4985,7 @@ void simGame<T>::savePayoffMatrixAsLatex() // FIX
 		cout << "There was an error opening the file.\n";
 	else
 	{
-		int val = -std::numeric_limits<T>::max();
+		T val = -std::numeric_limits<T>::max();
 		for (int m = 0; (unsigned)m < payoffMatrix.size(); m++)
 		{
 			if (numPlayers > 2)
@@ -5109,7 +5109,7 @@ void simGame<T>::saveToFile()
 		}
 		outfile << endl;
 		
-		int val = -std::numeric_limits<T>::max();
+		T val = -std::numeric_limits<T>::max();
 		for (int m = 0; (unsigned)m < payoffMatrix.size(); m++)
 		{
 			for (int i = 0; i < players.at(0)->getNumStrats(); i++)
