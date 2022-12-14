@@ -15,7 +15,7 @@ Purpose: for holding EU's
 #ifndef POLYNOMIAL_H
 #define POLYNOMIAL_H
 #include "inputValidation.cpp"
-#include "term.h"
+#include "Term.h"
 
 #include <algorithm>
 #include <cmath>
@@ -71,6 +71,7 @@ class Polynomial
 		
 		void addTerm(int, vector<int>);
 		void addTerm(Term*);
+		void appendTerm(double, vector<int>);
 		void computeTotalDegree();
 		Polynomial* derivative(int);
 		void enterInfo();
@@ -93,7 +94,7 @@ class Polynomial
 		void setEUExponents(vector<vector<int> >);
 		void setTerm(int, Term*);
 		void simplify();
-		vector<string> split(string, const char )
+		vector<string> split(string, const char);
 		void tokenize(string const &, const char, vector<string> &);
 };
 
@@ -211,16 +212,7 @@ Polynomial::Polynomial(int nT, int nV, int var) // FINISH
 	linear = true;
 }
 
-// https://java2blog.com/split-string-space-cpp/#:~:text=We%20can%20also%20use%20std,tokens%20left%20in%20the%20String.
-void Polynomial::tokenize(string const &str, const char delim, vector<string> &out)
-{
-	stringstream ss(str);
-	string s;
-	while (getline(ss, s, delim))
-		out.push_back(s);
-}
-
-vector<string> split(string str, const char c)
+vector<string> Polynomial::split(string str, const char c)
 {
     string substring = "";
 	vector<string> subStrings;
@@ -238,36 +230,78 @@ vector<string> split(string str, const char c)
 	return subStrings;
 }
 
+void Polynomial::appendTerm(double c, vector<int> e)
+{
+	Term *newNode;  // To point to a new node
+
+	// Allocate a new node and store num there.
+	newNode = new Term;
+	newNode->coefficient = c;
+	newNode->exponents = e;
+	newNode->next = NULL;
+
+	// If there are no nodes in the list make newNode the first node.
+	if (!leading) 
+	{
+		leading = newNode;
+		trailing = newNode;
+	}
+	else  // Otherwise, insert newNode at end.
+	{
+		//set the current last node's next pointer to the new node
+		trailing->next = newNode;
+		//now the trailing is the new node
+		trailing = newNode;
+	}
+}
+
 Polynomial::Polynomial(string s)
 {
 	// removing spaces
 	s.erase(remove_if(s.begin(), s.end(), ::isspace), s.end());
-	cout << s << endl;
 
-	vector<string> terms = split(s, '+');
-
-	for (auto t : terms)
-		cout << t << endl;
-
+	// input validation
 	for (int i = 0; i < s.length(); i++)
 	{
-		if (isalpha(s[i]))
+		if (isalpha(s[i]) && s[i] != 'x')
 		{
 			cout << "ERROR: input string must be of the form ax^n + bx^{n-1} + ... + yx + z" << endl;
-			const char delim1 = ' + ';
-			vector<string> terms;
-			tokenize(s, delim1, terms);
-
-			const char delim2 = '^';
-			vector<vector<string> > components;
-			for (int i = 0; i < numTerms; i++)
-				tokenize(terms[i], delim2, components[i]);
-
-			
-
+			delete this;
+			return;
 		}
 	}
 
+	// getting each term
+	vector<string> terms = split(s, '+');
+	numTerms = terms.size();
+
+	// splitting over ^'s
+	vector<vector<string> > components;
+	for (auto t : terms)
+		components.push_back(split(t, '^'));
+
+	// saving in coeffs and exponents
+	vector<double> coeffs;
+	vector<int> exponents;
+	for (int i = 0; i < terms.size(); i++)
+	{
+		vector<string> pair = split(components[i][0], 'x');
+		coeffs.push_back(stod(pair[0]));
+		exponents.push_back(stoi(components[i][1]));
+	}
+
+	// building the polynomial
+	leading = NULL;
+	trailing = NULL;
+
+	for (int i = 0; i < numTerms; i++)
+	{
+		vector<int> temp(numTerms);
+		temp.at(0) = exponents.at(0);
+		this->appendTerm(coeffs.at(i), temp);
+	}
+
+	this->printPolynomial();
 }
 
 // destructor
@@ -992,8 +1026,9 @@ void Polynomial::printPolynomial()
 	// simplify();
 	for (int t = 0; t < numTerms; t++) // terms
 	{
+		// check if not constant
 		nonConstant = false;
-		for (int v = 0; v < numVariables; v++) // variables
+		for (int v = 0; v < numVariables; v++)
 		{
 			if (getExponent(t, v) != 0)
 				nonConstant = true; // at least one is nonzero
