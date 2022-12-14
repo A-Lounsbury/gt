@@ -20,6 +20,7 @@ Purpose: for holding EU's
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <sstream>
 using namespace std;
 
 // polynomials of the form [coefficient, exponents] -> ... -> [coefficient, exponents]
@@ -54,7 +55,7 @@ class Polynomial
 		
 		Polynomial();
 		Polynomial(int, int, int);
-		Polynomial(int, int, vector<int>, int);
+		Polynomial(string);
 		~Polynomial();
 		
 		// Polynomial operator+(const Polynomial &p);
@@ -90,12 +91,13 @@ class Polynomial
 		void setEUExponents(vector<vector<int> >);
 		void setTerm(int, Term*);
 		void simplify();
+		void tokenize(string const &s, const char delim, vector<string> &out);
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // constructor
-Polynomial::Polynomial() // FINISH
+Polynomial::Polynomial()
 {
 	leading = NULL;
 	trailing = NULL;
@@ -204,6 +206,38 @@ Polynomial::Polynomial(int nT, int nV, int var) // FINISH
 		totalDegree = -1;
 	}
 	linear = true;
+}
+
+// https://java2blog.com/split-string-space-cpp/#:~:text=We%20can%20also%20use%20std,tokens%20left%20in%20the%20String.
+void Polynomial::tokenize(string const &str, const char delim, vector<string> &out)
+{
+	stringstream ss(str);
+	string s;
+	while (getline(ss, s, delim))
+		out.push_back(s);
+}
+
+Polynomial::Polynomial(string s)
+{
+	for (int i = 0; i < s.length(); i++)
+	{
+		if (isalpha(s[i]))
+		{
+			cout << "ERROR: input string must be of the form ax^n + bx^{n-1} + ... + yx + z" << endl;
+			const char delim1 = ' + ';
+			vector<string> terms;
+			tokenize(s, delim1, terms);
+
+			const char delim2 = '^';
+			vector<vector<string> > components;
+			for (int i = 0; i < numTerms; i++)
+				tokenize(terms[i], delim2, components[i]);
+
+			
+
+		}
+	}
+
 }
 
 // destructor
