@@ -60,8 +60,7 @@ class Polynomial
 		Polynomial(string);
 		~Polynomial();
 		
-		// Polynomial operator+(const Polynomial &p);
-		// Polynomial operator+(Polynomial &l, Polynomial &r);
+		Polynomial* operator+(const Polynomial &p);
 		Polynomial operator*(const Polynomial &p);
 		Polynomial* operator-(const Polynomial &p);
 		bool operator==(const Polynomial &p);
@@ -115,7 +114,8 @@ Polynomial::Polynomial()
 
 // these polynomials are in R[var]
 // a_{nT}x^{nT} + a_{nT-1}x^{nT-1} + ... + a_1x^{nT-(nT-1)} + a_0
-Polynomial::Polynomial(int nT, int nV, int var) // FINISH
+// FINISH
+Polynomial::Polynomial(int nT, int nV, int var)
 {
 	numVariables = nV;
 	
@@ -308,119 +308,6 @@ Polynomial::~Polynomial()
 	delete this;
 }
 
-/*Polynomial Polynomial::operator+(const Polynomial &p)
-{		
-	Polynomial poly;
-	// int pTermIndex = -1, thisTermIndex = -1;
-	// bool inP = false, inThis = false;
-	
-	// constructor creates a single NULL node; if so, do nothing
-	if (this == NULL)
-		return p;
-	else if (&p == NULL || (this == NULL && &p == NULL))
-		return *this;
-	
-	/*if (this->getNumTerms() >= p.getNumTerms())
-	{		
-		// start with highest degree/first term in this
-		for (int t1 = 0; t1 < this->getNumTerms(); t1++)
-		{					
-			inP = false;
-			// check if p has a term of the same degree
-			for (int t2 = 0; t2 < p.getNumTerms(); t2++)
-			{						
-				if (this->getExponents(t1) == p.getExponents(t2))
-				{							
-					inP = true;
-					pTermIndex = t2;
-				}
-			}
-			
-			if (inP) // add coefficients
-			{
-				poly.setCoefficient(t1, this->getCoefficient(t1) + p.getCoefficient(pTermIndex));
-				poly.setExponents(t1, this->getExponents(t1));
-			}
-			else
-			{
-				poly.setCoefficient(t1, this->getCoefficient(t1));
-				poly.setExponents(t1, this->getExponents(t1));
-			}
-		}
-	}
-	else
-	{		
-		// start with highest degree/first term in p
-		for (int t1 = 0; t1 < p.getNumTerms(); t1++)
-		{
-			inThis = false;
-			// check if this has a term of the same degree
-			for (int t2 = 0; t2 < this->getNumTerms(); t2++)
-			{
-				if (this->getExponents(t2) == p.getExponents(t1))
-				{
-					inThis = true;
-					thisTermIndex = t2;
-				}
-			}
-			
-			if (inThis) // add coefficients
-			{
-				poly.setCoefficient(t1, this->getCoefficient(thisTermIndex) + p.getCoefficient(t1));
-				poly.setExponents(t1, p.getExponents(t1));
-			}
-			else
-			{
-				poly.setCoefficient(t1, p.getCoefficient(t1));
-				poly.setExponents(t1, p.getExponents(t1));
-			}
-		}				
-	}*/
-	
-	/*cout << "\nNT: " << this->getNumTerms() << endl;
-	cout << "NT: " << p.getNumTerms() << endl;
-	
-	for (int t = 0; t < this->getNumTerms(); t++)
-		poly.addTerm(this->getTerm(t));
-	for (int t = 0; t < p.getNumTerms(); t++)
-		poly.addTerm(p.getTerm(t));
-	
-	poly.simplify();
-	return poly;
-}*/
-
-// polynomial multiplication
-Polynomial Polynomial::operator*(const Polynomial &p)
-{
-	int nV = this->getNumVariables();
-	if (nV < p.getNumVariables())
-		nV = p.getNumVariables();
-				
-	Polynomial* poly = new Polynomial(this->getNumTerms() * p.getNumVariables(), nV, -1);
-	
-	for (int t1 = 0; t1 < this->getNumTerms(); t1++)
-	{
-		for (int t2 = 0; t2 < p.getNumTerms(); t2++)
-		{
-			poly->setCoefficient(t1 + t2, this->getCoefficient(t1) + p.getCoefficient(t2));
-			for (int v = 0; v < poly->getNumVariables(); v++)
-				poly->setExponent(t1 + t2, v, this->getExponent(t1, v) + p.getExponent(t2, v));
-		}
-	}
-	return *poly;
-}
-
-// polynomial subtraction
-Polynomial* Polynomial::operator-(const Polynomial &p)
-{
-	for (int i = 0; i < p.getNumTerms(); i++)
-		this->appendTerm(-p.getCoefficient(i), p.getExponents(i));
-
-	this->simplify();
-
-	return this;
-}
-
 /// @brief polynomial equality
 /// @param p 
 /// @return 
@@ -452,68 +339,26 @@ bool Polynomial::operator!=(const Polynomial &p)
 		return true;
 }
 
-// polynomial order, less than
-bool Polynomial::operator<(const Polynomial &p) // FINISH
-{
-	// x^alpha = a_0x^alpha_0 + a_1x^alpha_1 + ... + a_{nT-2}x^alpha_{nT-2} + a_{nT-1}x^alpha_{nT-1}
-	// x^beta = b_0x^beta_0 + b_1x^beta_1 + ... + b_{nT-2}x^beta_{nT-2} + b_{nT-1}x^beta_{nT-1}
-	
-	// constructor creates a single NULL node; if so, do nothing
-	if (this == NULL && &p != NULL && p.getCoefficient(0) != 0)
-		return true;
-	else if (this != NULL && &p == NULL)
-		return false;
-	else if (this == NULL && &p == NULL)
-		return false;
-	
-	// check to see if equal terms exist
-	
-	if (*this == p)
-		return false;
-	
-	// eliminating equal terms
-	// if p = f + h and q = g + h ==> only need to check f < g
-
-	// checking integral
-	if ((*this - p)->integrateOverInterval(0, 1, 0) <= 0)
-		return false;
-	
-	// check derivatives
-	
-	return true;
-}
-
-// polynomial order, greater than
-bool Polynomial::operator>(const Polynomial &p)
-{
-	if (*this == p || *this < p)
-		return false;
-	else
-		return true;
-}
-
 void Polynomial::appendTerm(double c, vector<int> e)
 {
-	Term *newNode;  // To point to a new node
+	Term *newTerm;
 
-	// Allocate a new node and store num there.
-	newNode = new Term;
-	newNode->coefficient = c;
-	newNode->exponents = e;
-	newNode->next = NULL;
+	// Allocate a new term
+	newTerm = new Term;
+	newTerm->coefficient = c;
+	newTerm->exponents = e;
+	newTerm->next = NULL;
 
-	// If there are no nodes in the list make newNode the first node.
+	// If no terms in list make newTerm the first term.
 	if (!leading) 
 	{
-		leading = newNode;
-		trailing = newNode;
+		leading = newTerm;
+		trailing = newTerm;
 	}
-	else  // Otherwise, insert newNode at end.
+	else  // Otherwise, insert newTerm at end.
 	{
-		//set the current last node's next pointer to the new node
-		trailing->next = newNode;
-		//now the trailing is the new node
-		trailing = newNode;
+		trailing->next = newTerm;
+		trailing = newTerm;
 	}
 }
 
