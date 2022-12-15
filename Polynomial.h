@@ -100,7 +100,7 @@ class Polynomial
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// constructor
+/// @brief default constructor
 Polynomial::Polynomial()
 {
 	leading = NULL;
@@ -212,6 +212,10 @@ Polynomial::Polynomial(int nT, int nV, int var) // FINISH
 	linear = true;
 }
 
+/// @brief splits a string into substrings based on the location of the character c in str
+/// @param str 
+/// @param c 
+/// @return 
 vector<string> Polynomial::split(string str, const char c)
 {
     string substring = "";
@@ -230,6 +234,8 @@ vector<string> Polynomial::split(string str, const char c)
 	return subStrings;
 }
 
+/// @brief creates a polynomial of the form given in s
+/// @param s 
 Polynomial::Polynomial(string s)
 {
 	// removing spaces
@@ -252,7 +258,7 @@ Polynomial::Polynomial(string s)
 
 	numVariables = 1;
 
-	// splitting over ^'s
+	// splitting over ^'s, components contains (cx, e)
 	vector<vector<string> > components;
 	for (auto t : terms)
 		components.push_back(split(t, '^'));
@@ -263,8 +269,15 @@ Polynomial::Polynomial(string s)
 	for (int i = 0; i < terms.size(); i++)
 	{
 		vector<string> pair = split(components[i][0], 'x');
-		coeffs.push_back(stod(pair[0]));
-		exponents.push_back(stoi(components[i][1]));
+		if (pair[0] == "")
+			coeffs.push_back(1.0);
+		else
+			coeffs.push_back(stod(pair[0]));
+
+		if (components[i].size() > 1)
+			exponents.push_back(stoi(components[i][1]));
+		else
+			exponents.push_back(1);
 	}
 
 	// building the polynomial
@@ -1132,7 +1145,7 @@ void Polynomial::setTerm(int t, Term* temp)
 	this->setExponents(t, temp->exponents);
 }
 
-// simplify
+/// @brief simplifies a polynomial and puts its terms in lexicographical order
 void Polynomial::simplify()
 {	
 	bool sameAlpha = true;
@@ -1163,7 +1176,7 @@ void Polynomial::simplify()
 			}
 		}
 	}
-	
+	this->lexOrder();
 }
 
 #endif
