@@ -230,31 +230,6 @@ vector<string> Polynomial::split(string str, const char c)
 	return subStrings;
 }
 
-void Polynomial::appendTerm(double c, vector<int> e)
-{
-	Term *newNode;  // To point to a new node
-
-	// Allocate a new node and store num there.
-	newNode = new Term;
-	newNode->coefficient = c;
-	newNode->exponents = e;
-	newNode->next = NULL;
-
-	// If there are no nodes in the list make newNode the first node.
-	if (!leading) 
-	{
-		leading = newNode;
-		trailing = newNode;
-	}
-	else  // Otherwise, insert newNode at end.
-	{
-		//set the current last node's next pointer to the new node
-		trailing->next = newNode;
-		//now the trailing is the new node
-		trailing = newNode;
-	}
-}
-
 Polynomial::Polynomial(string s)
 {
 	// removing spaces
@@ -425,79 +400,20 @@ Polynomial Polynomial::operator*(const Polynomial &p)
 // polynomial subtraction
 Polynomial* Polynomial::operator-(const Polynomial &p)
 {
-	// cout << "SUBTRACTION\n";
-	
-	Polynomial* poly;
-	int pTermIndex = -1, thisTermIndex = -1;
-	bool inP = false, inThis = false;
-	
-	if (this->getNumTerms() >= p.getNumTerms())
-	{
-		poly = new Polynomial(this->getNumTerms(), this->getNumVariables(), -1); // -1 bc the var parameter isn't needed and is irrelevant
-		
-		// start with highest degree/first term in this
-		for (int i = 0; i < this->getNumTerms(); i++)
-		{
-			inP = false;
-			// check if p has a term of the same degree
-			for (int j = 0; j < p.getNumTerms(); j++)
-			{
-				if (p.getExponents(j) == this->getExponents(i))
-				{
-					inP = true;
-					pTermIndex = j;
-				}
-			}
-			
-			if (inP) // subtract coefficients
-			{
-				poly->setCoefficient(i, this->getCoefficient(i) - p.getCoefficient(pTermIndex));
-				poly->setExponents(i, this->getExponents(i));
-			}
-			else
-			{
-				poly->setCoefficient(i, this->getCoefficient(i));
-				poly->setExponents(i, this->getExponents(i));
-			}
-		}
-	}
-	else
-	{
-		poly = new Polynomial(p.getNumTerms(), p.getNumVariables(), -1); // -1 bc the var parameter isn't needed and is irrelevant
-		
-		// start with highest degree/first term in p
-		for (int i = 0; i < p.getNumTerms(); i++)
-		{
-			inThis = false;
-			// check if this has a term of the same degree
-			for (int j = 0; j < this->getNumTerms(); j++)
-			{
-				if (this->getExponents(j) == p.getExponents(i))
-				{
-					inThis = true;
-					thisTermIndex = j;
-				}
-			}
-			
-			if (inThis) // subtract coefficients
-			{
-				poly->setCoefficient(i, this->getCoefficient(thisTermIndex) - p.getCoefficient(i));
-				poly->setExponents(i, p.getExponents(i));
-			}
-			else
-			{
-				poly->setCoefficient(i, -p.getCoefficient(i));
-				poly->setExponents(i, p.getExponents(i));
-			}
-		}				
-	}
-	poly->simplify();			
-	return poly;
+	for (int i = 0; i < p.getNumTerms(); i++)
+		this->appendTerm(-p.getCoefficient(i), p.getExponents(i));
+
+	this->simplify();
+
+	return this;
 }
 
-// polynomial equality
+/// @brief polynomial equality
+/// @param p 
+/// @return 
 bool Polynomial::operator==(const Polynomial &p)
 {
+	// comparing total degree, numTerms
 	if (this->getTotalDegree() != p.getTotalDegree() || this->getNumTerms() != p.getNumTerms())
 		return false;
 	
@@ -512,7 +428,9 @@ bool Polynomial::operator==(const Polynomial &p)
 	return true;
 }
 
-// polynomial inequality
+/// @brief polynomial inequality
+/// @param p 
+/// @return 
 bool Polynomial::operator!=(const Polynomial &p)
 {
 	if (*this == p)
@@ -559,6 +477,31 @@ bool Polynomial::operator>(const Polynomial &p)
 		return false;
 	else
 		return true;
+}
+
+void Polynomial::appendTerm(double c, vector<int> e)
+{
+	Term *newNode;  // To point to a new node
+
+	// Allocate a new node and store num there.
+	newNode = new Term;
+	newNode->coefficient = c;
+	newNode->exponents = e;
+	newNode->next = NULL;
+
+	// If there are no nodes in the list make newNode the first node.
+	if (!leading) 
+	{
+		leading = newNode;
+		trailing = newNode;
+	}
+	else  // Otherwise, insert newNode at end.
+	{
+		//set the current last node's next pointer to the new node
+		trailing->next = newNode;
+		//now the trailing is the new node
+		trailing = newNode;
+	}
 }
 
 // get total degree
@@ -1191,29 +1134,21 @@ void Polynomial::setTerm(int t, Term* temp)
 
 // simplify
 void Polynomial::simplify()
-{
-	cout << "SIMPLIFY\n";
-	
+{	
 	bool sameAlpha = true;
 	
 	// getting rid of zero terms
 	for (int t = 0; t < numTerms; t++)
 	{
-		cout << "t: " << t << endl;
 		if (getCoefficient(t) == 0 && numTerms > 1)
-		{
-			// cout << "IF\n";
 			removeTerm(t);
-		}
 	}
 	
 	// combining nonzero terms
 	for (int t1 = 0; t1 < numTerms; t1++)
 	{
-		cout << "t1: " << t1 << endl;
 		for (int t2 = t1 + 1; t2 < numTerms; t2++)
 		{
-			cout << "t2: " << t2 << endl;
 			sameAlpha = true;
 			for (int v = 0; v < numVariables; v++)
 			{
@@ -1222,7 +1157,6 @@ void Polynomial::simplify()
 			}
 			if (sameAlpha)
 			{
-				cout << "\tsame\n";
 				setCoefficient(t1, getCoefficient(t1) + getCoefficient(t2));
 				if (numTerms > 1)
 					removeTerm(t2);
@@ -1230,7 +1164,6 @@ void Polynomial::simplify()
 		}
 	}
 	
-	cout << "DONE SIMPLIFY\n";
 }
 
 #endif
