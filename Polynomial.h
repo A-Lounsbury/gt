@@ -308,6 +308,93 @@ Polynomial::~Polynomial()
 	delete this;
 }
 
+
+// polynomial addition
+Polynomial* Polynomial::operator+(const Polynomial &p)
+{
+	this->trailing->next = p.leading;
+	this->trailing = p.trailing;
+
+	cout << "HERE";
+	this->printPolynomial();
+
+	this->simplify();
+
+	return this;
+}
+
+// polynomial multiplication
+Polynomial Polynomial::operator*(const Polynomial &p)
+{
+	int nV = this->getNumVariables();
+	if (nV < p.getNumVariables())
+		nV = p.getNumVariables();
+				
+	Polynomial* poly = new Polynomial(this->getNumTerms() * p.getNumVariables(), nV, -1);
+	
+	for (int t1 = 0; t1 < this->getNumTerms(); t1++)
+	{
+		for (int t2 = 0; t2 < p.getNumTerms(); t2++)
+		{
+			poly->setCoefficient(t1 + t2, this->getCoefficient(t1) + p.getCoefficient(t2));
+			for (int v = 0; v < poly->getNumVariables(); v++)
+				poly->setExponent(t1 + t2, v, this->getExponent(t1, v) + p.getExponent(t2, v));
+		}
+	}
+	return *poly;
+}
+
+// polynomial subtraction
+Polynomial* Polynomial::operator-(const Polynomial &p)
+{
+	for (int i = 0; i < p.getNumTerms(); i++)
+		this->appendTerm(-p.getCoefficient(i), p.getExponents(i));
+
+	this->simplify();
+
+	return this;
+}
+
+// polynomial order, less than
+bool Polynomial::operator<(const Polynomial &p) // FINISH
+{
+	// x^alpha = a_0x^alpha_0 + a_1x^alpha_1 + ... + a_{nT-2}x^alpha_{nT-2} + a_{nT-1}x^alpha_{nT-1}
+	// x^beta = b_0x^beta_0 + b_1x^beta_1 + ... + b_{nT-2}x^beta_{nT-2} + b_{nT-1}x^beta_{nT-1}
+	
+	// constructor creates a single NULL node; if so, do nothing
+	if (this == NULL && &p != NULL && p.getCoefficient(0) != 0)
+		return true;
+	else if (this != NULL && &p == NULL)
+		return false;
+	else if (this == NULL && &p == NULL)
+		return false;
+	
+	// check to see if equal terms exist
+	
+	if (*this == p)
+		return false;
+	
+	// eliminating equal terms
+	// if p = f + h and q = g + h ==> only need to check f < g
+
+	// checking integral
+	if ((*this - p)->integrateOverInterval(0, 1, 0) <= 0)
+		return false;
+	
+	// check derivatives
+	
+	return true;
+}
+
+// polynomial order, greater than
+bool Polynomial::operator>(const Polynomial &p)
+{
+	if (*this == p || *this < p)
+		return false;
+	else
+		return true;
+}
+
 /// @brief polynomial equality
 /// @param p 
 /// @return 
