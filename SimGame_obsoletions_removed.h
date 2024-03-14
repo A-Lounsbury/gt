@@ -3124,7 +3124,7 @@ vector<int> simGame<T>::unhash(int m)
 	int choice = 0;
 	int previousValues = 0; // values from players below P_x
 	int productNumStrats = 1;
-	vector<int> profile = vector<int>(numPlayers);
+	vector<int> profile = vector<int>(numPlayers); // a vector of zeros of length numPlayers
 	profile.at(0) = -1;
 	profile.at(1) = -1;
 	
