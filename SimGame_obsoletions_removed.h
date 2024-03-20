@@ -43,60 +43,25 @@ class simGame
 		void clearPureEquilibria() { pureEquilibria.clear(); }
 		void clearParetoPureEquilibria() { paretoPureEquilibria.clear(); }
 		void pushKOutcomeProbabilities() { outcomeProbabilities.push_back(0.0); }
-		
-		bool getImpartial() 										{ return impartial; }
-		vector<int> getKOutcome(int i) 								{ return kOutcomes.at(i); }
-		vector<int> getKStrategy(int i) 							{ return kStrategies.at(i); }
-		int getMaxRationality() 									{ return maxR; }
-		int getNumOutcomes() const 									{ return numOutcomes; }
-		int getNumPlayers() const 									{ return numPlayers; }
-		double getOutcomeProbability(int i) 						{ return outcomeProbabilities.at(i); }
-		vector<int> getParetoEquilibrium(int i) 					{ return paretoPureEquilibria.at(i); }
-		vector<vector<int> > getParetoPureEquilibria() 				{ return paretoPureEquilibria; }
-		vector<vector<vector<LinkedList<T>*> > > getPayoffMatrix()	{ return payoffMatrix; }
-		vector<vector<int> > getPureEquilibria() 					{ return pureEquilibria; }
-		vector<int> getPureEquilibrium(int i)						{ return pureEquilibria.at(i); }
-		double getRationalityProbability(double i)					{ return rationalityProbabilities.at(i); }
-		
-		int getSizeKOutcomes() 										{ return kOutcomes.size(); }
-		int getSizeKOutcomeProbabilities() 							{ return outcomeProbabilities.size(); }
-		int getSizeParetoPureEquilibria() 							{ return paretoPureEquilibria.size(); }
-		int getSizePureEquilibria() 								{ return pureEquilibria.size(); }
+	
 		void pushKOutcome(vector<int> temp) 						{ kOutcomes.push_back(temp); }
 		void pushEquilibrium(vector<int> temp) 						{ pureEquilibria.push_back(temp); }
 		void pushParetoEquilibrium(vector<int> temp) 				{ paretoPureEquilibria.push_back(temp); }
-		void setImpatial(bool val) 									{ impartial = val; }
-		void setMaxRationality(int m) 								{ maxR = m; }
-		void setNumOutcomes(int num) 								{ numOutcomes = num; }
-		void setNumPlayers(int n) 									{ numPlayers = n; }
-		void setOutcomeProbability(int i, double num) 				{ outcomeProbabilities.at(i) = num; }
-		void setRationalityProbability(int i, double num) 			{ rationalityProbabilities.at(i) = num; }
 		
 		void addStrategy(int);
 		bool allEqualEquilibria();
 		bool bosCondition(vector<int>, vector<int>);
 		void changeAPayoff(int);
 		void changePayoffs(int);
-		bool checkBOSConditions();		
-		bool checkChickenConditions();
-		bool checkIHConditions();	
-		bool checkNullCondition();
-		bool checkPDConditions();
-		bool checkSHConditions();
-		bool checkZSConditions();
-		bool chickenCondition(vector<int>, vector<int>);
 		void computeBestResponses();
 		void computeChoices();
 		vector<vector<Polynomial*> > computeExpectedUtilities();
-		void computeImpartiality();
 		void computeKStrategies();
 		void computeNumOutcomes();
 		void computePureEquilibria();
 		bool coordination();
-		void determineType();
 		vector<int> enterStratProfile();
 		bool equalEquilibria(int, int);
-		vector<vector<vector<bool> > > extraSpacesInColumns();
 		int hash(vector<int>);
 		bool isInferior();
 		void isMixed();
@@ -115,14 +80,12 @@ class simGame
 		void printPayoffMatrixSansInfo();
 		void properDominantStrategies();
 		bool PO(vector<int>);
-		void randType();
 		// void removePlayer();
 		void removeStrategy(int, int);
 		void removeStrategyPrompt(int);
 		int rHash(vector<int>);
 		vector<int> rUnhash(int matrixIndex);
 		void saveKMatrixAsLatex(vector<int>, vector<double>);
-		bool shCondition(vector<int>, vector<int>);
 		double solve(Polynomial*, Polynomial*);
 		vector<int> unhash(int);
 	public:
@@ -558,34 +521,6 @@ bool simGame<T>::allEqualEquilibria()
 					if (!equalEquilibria(a, i))
 						return false;
 				}
-	return true;
-}
-
-// checks if Null game
-template <typename T>
-bool simGame<T>::checkNullCondition()
-{
-	int factor = -1;
-	LinkedList<T>* curList;
-
-	computeNumOutcomes();
-	
-	if (getSizePureEquilibria() != numOutcomes)
-		return false;
-	
-	for (int x = 0; x < numPlayers; x++)
-	{
-		factor = payoffMatrix.at(0).at(0).at(0)->getNodeValue(x);
-		for (int m = 0; (unsigned)m < payoffMatrix.size(); m++)
-			for (int i = 0; i < players.at(0)->getNumStrats(); i++)
-				for (int j = 0; j < players.at(1)->getNumStrats(); j++)
-				{					
-					curList = payoffMatrix.at(m).at(i).at(j);
-					if (curList->getNodeValue(x) != factor)
-						return false;
-				}
-		
-	}
 	return true;
 }
 
@@ -1123,22 +1058,6 @@ vector<vector<Polynomial*> > simGame<T>::computeExpectedUtilities()
 		}
 		return EU;
 	}
-}
-
-// compute impartiality
-template <typename T>
-void simGame<T>::computeImpartiality()
-{
-	int num = players.at(0)->getNumStrats();
-	for (int x = 1; x < numPlayers; x++)
-	{
-		if (players.at(x)->getNumStrats() != num)
-		{
-			impartial = false;
-			return;
-		}
-	}
-	impartial = true;
 }
 
 // compute k-strategies
