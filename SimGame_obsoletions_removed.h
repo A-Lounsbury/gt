@@ -1117,7 +1117,6 @@ void simGame<T>::computeKStrategies()
 									maxStrat = unhash(m).at(x);
 							}
 						}
-					
 				}
 				kStrategies.at(r).at(x) = maxStrat;
 			}
